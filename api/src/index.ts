@@ -5,6 +5,7 @@ import auth from "./routes/auth";
 import health from "./routes/health";
 import forms from "./routes/forms";
 import questions from "./routes/questions";
+import responses from "./routes/responses";
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
     strict: false,
@@ -13,7 +14,7 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
 app.use("*", authMiddleware);
 
 
-const routes = [auth, forms, questions] as const;
+const routes = [auth, forms, questions, responses] as const;
 
 const api = app.basePath("/api");
 
