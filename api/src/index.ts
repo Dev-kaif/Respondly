@@ -5,10 +5,23 @@ import forms from './routes/forms'
 import questions from './routes/questions'
 import responses from './routes/responses'
 import type { Bindings, Variables } from './types'
+import { cors } from 'hono/cors'
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
   strict: false,
 })
+
+
+app.use(
+  '*',
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+  }),
+)
+
 
 app.use('*', authMiddleware)
 
