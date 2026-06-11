@@ -1,25 +1,23 @@
-import { Hono } from "hono";
-import type { Bindings, Variables } from "./types";
-import { authMiddleware } from "./middleware/auth";
-import auth from "./routes/auth";
-import health from "./routes/health";
-import forms from "./routes/forms";
-import questions from "./routes/questions";
-import responses from "./routes/responses";
+import { Hono } from 'hono'
+import { authMiddleware } from './middleware/auth'
+import auth from './routes/auth'
+import forms from './routes/forms'
+import questions from './routes/questions'
+import responses from './routes/responses'
+import type { Bindings, Variables } from './types'
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
-    strict: false,
-});
+  strict: false,
+})
 
-app.use("*", authMiddleware);
+app.use('*', authMiddleware)
 
+const routes = [auth, forms, questions, responses] as const
 
-const routes = [auth, forms, questions, responses] as const;
-
-const api = app.basePath("/api");
+const api = app.basePath('/api')
 
 routes.forEach((route) => {
-    api.route("/", route);
-});
+  api.route('/', route)
+})
 
-export default app;
+export default app

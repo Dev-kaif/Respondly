@@ -1,113 +1,113 @@
-import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sql } from 'drizzle-orm'
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-import { user } from "./auth-schema";
+import { user } from './auth-schema'
 
-export const forms = sqliteTable("forms", {
-    id: text("id").primaryKey(),
+export const forms = sqliteTable('forms', {
+  id: text('id').primaryKey(),
 
-    userId: text("user_id")
-        .notNull()
-        .references(() => user.id, {
-            onDelete: "cascade",
-        }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, {
+      onDelete: 'cascade',
+    }),
 
-    title: text("title").notNull(),
+  title: text('title').notNull(),
 
-    description: text("description"),
+  description: text('description'),
 
-    slug: text("slug").notNull().unique(),
+  slug: text('slug').notNull().unique(),
 
-    theme: text("theme").notNull().default("minimal"),
+  theme: text('theme').notNull().default('minimal'),
 
-    primaryColor: text("primary_color").default("#000000"),
+  primaryColor: text('primary_color').default('#000000'),
 
-    logoUrl: text("logo_url"),
+  logoUrl: text('logo_url'),
 
-    backgroundUrl: text("background_url"),
+  backgroundUrl: text('background_url'),
 
-    isPublished: integer("is_published", {
-        mode: "boolean",
-    })
-        .notNull()
-        .default(false),
+  isPublished: integer('is_published', {
+    mode: 'boolean',
+  })
+    .notNull()
+    .default(false),
 
-    createdAt: integer("created_at", {
-        mode: "timestamp_ms",
-    })
-        .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-        .notNull(),
+  createdAt: integer('created_at', {
+    mode: 'timestamp_ms',
+  })
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+    .notNull(),
 
-    updatedAt: integer("updated_at", {
-        mode: "timestamp_ms",
-    })
-        .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-        .$onUpdate(() => new Date())
-        .notNull(),
-});
+  updatedAt: integer('updated_at', {
+    mode: 'timestamp_ms',
+  })
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+    .$onUpdate(() => new Date())
+    .notNull(),
+})
 
-export const questions = sqliteTable("questions", {
-    id: text("id").primaryKey(),
+export const questions = sqliteTable('questions', {
+  id: text('id').primaryKey(),
 
-    formId: text("form_id")
-        .notNull()
-        .references(() => forms.id, {
-            onDelete: "cascade",
-        }),
+  formId: text('form_id')
+    .notNull()
+    .references(() => forms.id, {
+      onDelete: 'cascade',
+    }),
 
-    type: text("type").notNull(),
+  type: text('type').notNull(),
 
-    title: text("title").notNull(),
+  title: text('title').notNull(),
 
-    placeholder: text("placeholder"),
+  placeholder: text('placeholder'),
 
-    required: integer("required", {
-        mode: "boolean",
-    })
-        .notNull()
-        .default(false),
+  required: integer('required', {
+    mode: 'boolean',
+  })
+    .notNull()
+    .default(false),
 
-    position: integer("position").notNull(),
+  position: integer('position').notNull(),
 
-    optionsJson: text("options_json"),
+  optionsJson: text('options_json'),
 
-    createdAt: integer("created_at", {
-        mode: "timestamp_ms",
-    })
-        .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-        .notNull(),
-});
+  createdAt: integer('created_at', {
+    mode: 'timestamp_ms',
+  })
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+    .notNull(),
+})
 
-export const responses = sqliteTable("responses", {
-    id: text("id").primaryKey(),
+export const responses = sqliteTable('responses', {
+  id: text('id').primaryKey(),
 
-    formId: text("form_id")
-        .notNull()
-        .references(() => forms.id, {
-            onDelete: "cascade",
-        }),
+  formId: text('form_id')
+    .notNull()
+    .references(() => forms.id, {
+      onDelete: 'cascade',
+    }),
 
-    submittedAt: integer("submitted_at", {
-        mode: "timestamp_ms",
-    })
-        .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-        .notNull(),
-});
+  submittedAt: integer('submitted_at', {
+    mode: 'timestamp_ms',
+  })
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+    .notNull(),
+})
 
-export const answers = sqliteTable("answers", {
-    id: text("id").primaryKey(),
+export const answers = sqliteTable('answers', {
+  id: text('id').primaryKey(),
 
-    responseId: text("response_id")
-        .notNull()
-        .references(() => responses.id, {
-            onDelete: "cascade",
-        }),
+  responseId: text('response_id')
+    .notNull()
+    .references(() => responses.id, {
+      onDelete: 'cascade',
+    }),
 
-    questionId: text("question_id")
-        .notNull()
-        .references(() => questions.id, {
-            onDelete: "cascade",
-        }),
+  questionId: text('question_id')
+    .notNull()
+    .references(() => questions.id, {
+      onDelete: 'cascade',
+    }),
 
-    value: text("value").notNull(),
-});
+  value: text('value').notNull(),
+})
