@@ -1,16 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth'
 
 export const Route = createFileRoute('/')({
-  component: Home,
+  beforeLoad: async () => {
+    const session = await authClient.getSession()
+
+    throw redirect({ to: session.data ? '/dashboard' : '/auth/login' })
+  },
 })
 
-function Home() {
-  return (
-    <main style={{ padding: 24, fontFamily: 'system-ui, sans-serif' }}>
-      <h1>Survey Builder — starter</h1>
-      <p>
-        Replace this with the app. See <code>README.md</code> at the repo root.
-      </p>
-    </main>
-  )
-}
