@@ -5,16 +5,23 @@
   "compatibility_date": "2026-05-22",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
-    "enabled": true
-  }
+    "enabled": true,
+  },
 
   // Add bindings here as you need them, then run `pnpm cf-typegen` to refresh `Env` types.
   //
   // Examples:
   //
-  // "d1_databases": [
-  //   { "binding": "DB", "database_name": "survey-builder", "database_id": "<id>" }
-  // ],
+  "d1_databases": [
+    {
+      "binding": "survey_builder",
+      "database_name": "survey-builder",
+      "database_id": "a1490984-b639-4c92-8613-56dbf5cbeb70",
+    },
+  ],
+  "vars": {
+    "BETTER_AUTH_URL": "http://localhost:5173",
+  },
   //
   // "kv_namespaces": [
   //   { "binding": "SESSIONS", "id": "<id>" }
