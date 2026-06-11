@@ -7,7 +7,7 @@ import * as authSchema from "../db/auth-schema";
 export const createAuth = (env: Bindings) => {
   return (
     betterAuth({
-      database: drizzleAdapter(createDb(env.survey_builder), {
+      database: drizzleAdapter(createDb(env), {
         provider: "sqlite",
         schema: authSchema,
       }),
