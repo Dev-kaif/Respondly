@@ -3,6 +3,7 @@ import type { Bindings, Variables } from "./types";
 import { authMiddleware } from "./middleware/auth";
 import auth from "./routes/auth";
 import health from "./routes/health";
+import forms from "./routes/forms";
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
     strict: false,
@@ -11,7 +12,7 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
 app.use("*", authMiddleware);
 
 
-const routes = [auth, health] as const;
+const routes = [auth, forms] as const;
 
 const api = app.basePath("/api");
 

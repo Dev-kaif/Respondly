@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { createAuth } from "../utils/auth";
-import type { Bindings } from "../types";
+import type { Bindings, Variables } from "../types";
 
-const router = new Hono<{ Bindings: Bindings }>({ strict: false });
+const router = new Hono<{ Bindings: Bindings; Variables: Variables }>();
 
 router.on(["POST", "GET"], "/auth/*", (c) => {
     const auth = createAuth(c.env);
