@@ -97,20 +97,7 @@ function SurveyHeader({
   description?: string | null
   builderConfig: BuilderConfig
 }) {
-  const headerTitle = builderConfig.header.title || title
-  const headerDescription = builderConfig.header.description || description
-
-  const logoAlignment = {
-    left: 'items-start text-left',
-    center: 'items-center text-center',
-    right: 'items-end text-right',
-  }[builderConfig.header.logoPosition]
-
-  const descriptionAlignment = {
-    left: 'mr-auto',
-    center: 'mx-auto',
-    right: 'ml-auto',
-  }[builderConfig.header.logoPosition]
+  const theme = builderConfig.theme
 
   const logoSize = {
     sm: 'h-8 max-w-32',
@@ -118,45 +105,116 @@ function SurveyHeader({
     lg: 'h-14 max-w-52',
   }[builderConfig.header.logoSize]
 
-  return (
-    <section
-      className={cn(
-        'flex flex-col gap-2 border p-6',
-        logoAlignment,
-        builderConfig.hero.enabled && 'min-h-56 justify-center gap-4 p-8',
-      )}
-      style={getSurveyCardStyle(builderConfig, 'header')}
-    >
-      {builderConfig.logoUrl ? (
-        <img
-          src={builderConfig.logoUrl}
-          alt=""
-          className={cn('rounded object-contain', logoSize)}
-        />
-      ) : null}
+  const alignment = {
+    left: 'items-start text-left',
+    center: 'items-center text-center',
+    right: 'items-end text-right',
+  }[builderConfig.header.logoPosition]
 
-      <div className="space-y-1">
-        <h1
-          className={cn(
-            'text-2xl font-semibold tracking-normal text-foreground',
-            builderConfig.hero.enabled && 'text-4xl',
+  const descriptionAlign = {
+    left: 'mr-auto',
+    center: 'mx-auto',
+    right: 'ml-auto',
+  }[builderConfig.header.logoPosition]
+
+  const headerTitle = builderConfig.header.title || title
+  const headerDescription = builderConfig.header.description || description
+
+  if (theme === 'corporate') {
+    return (
+      <section
+        className={`flex flex-col gap-1 p-6 ${alignment}`}
+        style={{
+          backgroundColor: builderConfig.primaryColor,
+          borderRadius: builderConfig.appearance.borderRadius,
+        }}
+      >
+        {builderConfig.logoUrl && (
+          <img src={builderConfig.logoUrl} alt="" className={`${logoSize} object-contain mb-2`} />
+        )}
+        <h1 className="text-2xl font-semibold text-white">{headerTitle}</h1>
+        {headerDescription && (
+          <p className={`text-sm text-white/75 ${descriptionAlign}`}>{headerDescription}</p>
+        )}
+      </section>
+    )
+  }
+
+  if (theme === 'hero') {
+    // hero is always centered by design — position/size still applies to logo
+    const heroLogoSize = {
+      sm: 'h-10 max-w-36',
+      md: 'h-14 max-w-52',
+      lg: 'h-20 max-w-64',
+    }[builderConfig.header.logoSize]
+
+    return (
+      <section
+        className="relative flex flex-col items-center justify-center gap-3 overflow-hidden p-12 text-center"
+        style={{
+          backgroundColor: builderConfig.primaryColor,
+          borderRadius: builderConfig.appearance.borderRadius,
+          minHeight: mode === 'builder' ? 180 : 240,
+        }}
+      >
+        <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-20" style={{ backgroundColor: '#ffffff' }} />
+        <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full opacity-10" style={{ backgroundColor: '#ffffff' }} />
+        {builderConfig.logoUrl && (
+          <img
+            src={builderConfig.logoUrl}
+            alt=""
+            className={`relative z-10 ${heroLogoSize} object-contain`}
+          />
+        )}
+        <div className="relative z-10 space-y-2">
+          <h1 className="text-4xl font-semibold text-white">{headerTitle}</h1>
+          {headerDescription && (
+            <p className="mx-auto max-w-lg text-base text-white/70">{headerDescription}</p>
           )}
-          style={{ color: builderConfig.primaryColor }}
-        >
+        </div>
+      </section>
+    )
+  }
+
+  if (theme === 'wave') {
+    return (
+      <section
+        className={`flex flex-col gap-2 border p-6 ${alignment}`}
+        style={getSurveyCardStyle(builderConfig, 'header')}
+      >
+        {builderConfig.logoUrl && (
+          <img src={builderConfig.logoUrl} alt="" className={`${logoSize} object-contain`} />
+        )}
+        <h1 className="text-2xl font-semibold" style={{ color: builderConfig.primaryColor }}>
           {headerTitle}
         </h1>
-
-        {headerDescription ? (
-          <p
-            className={cn(
-              'text-sm leading-6 text-muted-foreground',
-              builderConfig.hero.enabled && 'max-w-2xl text-base',
-              descriptionAlignment,
-            )}
-          >
+        {headerDescription && (
+          <p className={`text-sm text-muted-foreground max-w-md ${descriptionAlign}`}>
             {headerDescription}
           </p>
-        ) : null}
+        )}
+      </section>
+    )
+  }
+
+  // minimal + custom
+  return (
+    <section
+      className={`flex flex-col gap-2 border p-6 ${alignment}`}
+      style={getSurveyCardStyle(builderConfig, 'header')}
+    >
+      {builderConfig.logoUrl && (
+        <img src={builderConfig.logoUrl} alt="" className={`${logoSize} object-contain`} />
+      )}
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold" style={{ color: builderConfig.primaryColor }}>
+          {headerTitle}
+        </h1>
+        {headerDescription && (
+          <p className={`text-sm leading-6 text-muted-foreground ${descriptionAlign}`}>
+            {headerDescription}
+          </p>
+        )}
       </div>
     </section>
   )
@@ -223,33 +281,30 @@ function SurveyDecoration({ builderConfig }: { builderConfig: BuilderConfig }) {
     return (
       <svg
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-56 w-full text-[var(--survey-primary)] opacity-20"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-48 w-full"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
       >
-        <path
-          fill="currentColor"
+        <path fill={builderConfig.primaryColor} opacity="0.12"
           d="M0,192L80,176C160,160,320,128,480,138.7C640,149,800,203,960,213.3C1120,224,1280,192,1360,176L1440,160L1440,320L0,320Z"
+        />
+        <path fill={builderConfig.primaryColor} opacity="0.07"
+          d="M0,224L80,213C160,202,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202L1440,192L1440,320L0,320Z"
         />
       </svg>
     )
   }
-
   if (builderConfig.decoration.type === 'hero') {
     return (
-      <svg
-        aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-0 h-80 w-1/2 text-[var(--survey-primary)] opacity-15"
-        viewBox="0 0 500 500"
-        preserveAspectRatio="xMidYMin slice"
+      <svg aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-0 h-80 w-1/2"
+        viewBox="0 0 500 500" preserveAspectRatio="xMidYMin slice"
       >
-        <path
-          fill="currentColor"
+        <path fill={builderConfig.primaryColor} opacity="0.08"
           d="M366.5,46.5C438.8,91.2,499.1,180.5,482.8,253.4C466.4,326.4,373.4,382.9,283.2,421.1C193.1,459.2,105.7,479,-4.1,477C-113.9,475,-246.2,451.2,-300.3,373.5C-354.4,295.8,-330.4,164.3,-263.8,88C-197.2,11.7,-88,-9.4,11.7,-18.9C111.4,-28.4,222.8,1.8,366.5,46.5Z"
         />
       </svg>
     )
   }
-
   return null
 }

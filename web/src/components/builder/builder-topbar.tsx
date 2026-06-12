@@ -48,6 +48,7 @@ export function BuilderTopbar() {
             <Pencil />
             Edit
           </Button>
+
           <Button
             type="button"
             size="sm"
@@ -58,7 +59,9 @@ export function BuilderTopbar() {
             Preview
           </Button>
         </div>
-        <ThemeSelector />
+        <div className={builderMode === 'preview' ? 'opacity-50' : ''}>
+          <ThemeSelector disabled={builderMode === 'preview'} />
+        </div>
       </div>
       <div className="flex items-center justify-end gap-2">
         <Button disabled={!form || !isDirty || saveMutation.isPending} onClick={saveBuilder}>
