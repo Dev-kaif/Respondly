@@ -10,9 +10,11 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 
 import { BuilderCanvas } from '@/src/components/builder/builder-canvas'
+import { BuilderPreview } from '@/src/components/builder/builder-preview'
 import { BuilderTopbar } from '@/src/components/builder/builder-topbar'
 import { EditorSidebar } from '@/src/components/builder/editor-sidebar'
 import { QuestionPalette } from '@/src/components/builder/question-palette'
+import { getSurveyBackgroundStyle } from '@/src/components/survey-renderer/appearance'
 import type { QuestionType } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
@@ -36,6 +38,8 @@ function isPaletteDragData(value: unknown): value is {
 
 export function BuilderLayout() {
   const questions = useBuilderStore((state) => state.questions)
+  const builderMode = useBuilderStore((state) => state.builderMode)
+  const builderConfig = useBuilderStore((state) => state.builderConfig)
   const insertQuestion = useBuilderStore((state) => state.insertQuestion)
   const reorderQuestions = useBuilderStore((state) => state.reorderQuestions)
   const questionIds = questions.map((question) => question.id)
@@ -82,13 +86,19 @@ export function BuilderLayout() {
     <div className="flex h-screen overflow-hidden rounded-xl border bg-background shadow-xs">
       <div className="flex min-w-0 flex-1 flex-col">
         <BuilderTopbar />
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <div className="flex min-h-0 flex-1">
-            <QuestionPalette />
-            <BuilderCanvas />
-            <EditorSidebar />
+        {builderMode === 'edit' ? (
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <div className="flex min-h-0 flex-1">
+              <QuestionPalette />
+              <BuilderCanvas />
+              <EditorSidebar />
+            </div>
+          </DndContext>
+        ) : (
+          <div className="flex min-h-0 flex-1" style={getSurveyBackgroundStyle(builderConfig)}>
+            <BuilderPreview />
           </div>
-        </DndContext>
+        )}
       </div>
     </div>
   )

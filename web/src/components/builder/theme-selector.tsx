@@ -9,13 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { THEME_OPTIONS, type ThemeId } from '@/src/lib/themes'
+import { getThemePreset, THEME_OPTIONS, type ThemeId } from '@/src/components/builder/themes/presets'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 export function ThemeSelector() {
   const builderConfig = useBuilderStore((state) => state.builderConfig)
-  const setBuilderConfig = useBuilderStore((state) => state.setBuilderConfig)
-  const markDirty = useBuilderStore((state) => state.markDirty)
+  const updateBuilderConfig = useBuilderStore((state) => state.updateBuilderConfig)
   const selectedTheme = THEME_OPTIONS.find((theme) => theme.id === builderConfig.theme)
 
   function selectTheme(theme: ThemeId) {
@@ -23,8 +22,7 @@ export function ThemeSelector() {
       return
     }
 
-    setBuilderConfig({ ...builderConfig, theme })
-    markDirty()
+    updateBuilderConfig(() => getThemePreset(theme).config)
   }
 
   return (

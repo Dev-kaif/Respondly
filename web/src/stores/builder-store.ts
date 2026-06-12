@@ -8,16 +8,21 @@ import {
 import { DEFAULT_BUILDER_CONFIG, type BuilderConfig } from '@/src/lib/builder-config'
 import type { BuilderForm } from '@/src/lib/api'
 
+export type BuilderMode = 'edit' | 'preview'
+
 type BuilderStore = {
   form: BuilderForm | null
   questions: BuilderQuestion[]
   builderConfig: BuilderConfig
+  builderMode: BuilderMode
   selectedQuestionId: string | null
   deletedQuestionIds: string[]
   isDirty: boolean
   setForm: (form: BuilderForm | null) => void
   setQuestions: (questions: BuilderQuestion[]) => void
   setBuilderConfig: (builderConfig: BuilderConfig) => void
+  updateBuilderConfig: (updater: (builderConfig: BuilderConfig) => BuilderConfig) => void
+  setBuilderMode: (builderMode: BuilderMode) => void
   addQuestion: (type: QuestionType) => void
   insertQuestion: (type: QuestionType, index: number) => void
   updateQuestion: (
@@ -41,12 +46,19 @@ export const useBuilderStore = create<BuilderStore>((set) => ({
   form: null,
   questions: [],
   builderConfig: DEFAULT_BUILDER_CONFIG,
+  builderMode: 'edit',
   selectedQuestionId: null,
   deletedQuestionIds: [],
   isDirty: false,
   setForm: (form) => set({ form }),
   setQuestions: (questions) => set({ questions }),
   setBuilderConfig: (builderConfig) => set({ builderConfig }),
+  setBuilderMode: (builderMode) => set({ builderMode }),
+  updateBuilderConfig: (updater) =>
+    set((state) => ({
+      builderConfig: updater(state.builderConfig),
+      isDirty: true,
+    })),
   addQuestion: (type) =>
     set((state) => {
       const question = createDefaultQuestion(type)

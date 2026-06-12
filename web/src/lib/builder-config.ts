@@ -1,64 +1,39 @@
-import { type ThemeId } from '@/src/lib/themes'
+import { getThemePreset, type ThemeId } from '@/src/components/builder/themes/presets'
 
 export type BuilderConfig = {
   theme: ThemeId
-  logo: {
-    url: string
-    alt: string
-    visible: boolean
-  }
-  background: {
-    type: 'solid' | 'image'
-    color: string
-    imageUrl: string
-  }
-  typography: {
-    headingFont: string
-    bodyFont: string
-    scale: 'compact' | 'default' | 'spacious'
+  logoUrl?: string
+  primaryColor: string
+  backgroundColor: string
+  backgroundImageUrl?: string
+  fontFamily: string
+  header: {
+    title: string
+    description: string
+    logoPosition: 'left' | 'center' | 'right'
+    logoSize: 'sm' | 'md' | 'lg'
   }
   submitButton: {
-    label: string
-    radius: 'sm' | 'md' | 'lg'
-    fullWidth: boolean
+    text: string
+    alignment: 'left' | 'center' | 'right'
   }
-  contentCard: {
+  appearance: {
+    backgroundImageOpacity: number
+    headerCardOpacity: number
+    questionCardOpacity: number
+    blurAmount: number
+    borderRadius: number
+    shadowStrength: 'none' | 'sm' | 'md' | 'lg'
+  }
+  hero: {
     enabled: boolean
-    width: 'narrow' | 'default' | 'wide'
-    radius: 'sm' | 'md' | 'lg'
-    shadow: 'none' | 'sm' | 'md'
+  }
+  decoration: {
+    type: 'none' | 'wave' | 'hero'
   }
 }
 
-export const DEFAULT_BUILDER_CONFIG: BuilderConfig = {
-  theme: 'minimal',
-  logo: {
-    url: '',
-    alt: '',
-    visible: false,
-  },
-  background: {
-    type: 'solid',
-    color: '#ffffff',
-    imageUrl: '',
-  },
-  typography: {
-    headingFont: 'Geist Variable',
-    bodyFont: 'Geist Variable',
-    scale: 'default',
-  },
-  submitButton: {
-    label: 'Submit',
-    radius: 'md',
-    fullWidth: false,
-  },
-  contentCard: {
-    enabled: true,
-    width: 'default',
-    radius: 'lg',
-    shadow: 'sm',
-  },
-}
+export const DEFAULT_BUILDER_CONFIG: BuilderConfig = getThemePreset('minimal').config
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -78,8 +53,16 @@ function pickString(value: unknown, fallback: string) {
   return typeof value === 'string' ? value : fallback
 }
 
+function pickOptionalString(value: unknown, fallback?: string) {
+  return typeof value === 'string' ? value : fallback
+}
+
 function pickBoolean(value: unknown, fallback: boolean) {
   return typeof value === 'boolean' ? value : fallback
+}
+
+function pickNumber(value: unknown, fallback: number) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : fallback
 }
 
 function pickOption<T extends string>(value: unknown, fallback: T, options: readonly T[]) {
@@ -99,59 +82,102 @@ export function mergeBuilderConfig(value: unknown): BuilderConfig {
     return DEFAULT_BUILDER_CONFIG
   }
 
-  const logo = isRecord(value.logo) ? value.logo : {}
-  const background = isRecord(value.background) ? value.background : {}
-  const typography = isRecord(value.typography) ? value.typography : {}
+  const fallback = isThemeId(value.theme)
+    ? getThemePreset(value.theme).config
+    : DEFAULT_BUILDER_CONFIG
+  const header = isRecord(value.header) ? value.header : {}
   const submitButton = isRecord(value.submitButton) ? value.submitButton : {}
-  const contentCard = isRecord(value.contentCard) ? value.contentCard : {}
+  const appearance = isRecord(value.appearance) ? value.appearance : {}
+  const hero = isRecord(value.hero) ? value.hero : {}
+  const decoration = isRecord(value.decoration) ? value.decoration : {}
 
   return {
-    theme: isThemeId(value.theme) ? value.theme : DEFAULT_BUILDER_CONFIG.theme,
-    logo: {
-      url: pickString(logo.url, DEFAULT_BUILDER_CONFIG.logo.url),
-      alt: pickString(logo.alt, DEFAULT_BUILDER_CONFIG.logo.alt),
-      visible: pickBoolean(logo.visible, DEFAULT_BUILDER_CONFIG.logo.visible),
-    },
-    background: {
-      type: pickOption(background.type, DEFAULT_BUILDER_CONFIG.background.type, ['solid', 'image']),
-      color: pickString(background.color, DEFAULT_BUILDER_CONFIG.background.color),
-      imageUrl: pickString(background.imageUrl, DEFAULT_BUILDER_CONFIG.background.imageUrl),
-    },
-    typography: {
-      headingFont: pickString(typography.headingFont, DEFAULT_BUILDER_CONFIG.typography.headingFont),
-      bodyFont: pickString(typography.bodyFont, DEFAULT_BUILDER_CONFIG.typography.bodyFont),
-      scale: pickOption(typography.scale, DEFAULT_BUILDER_CONFIG.typography.scale, [
-        'compact',
-        'default',
-        'spacious',
+    theme: isThemeId(value.theme) ? value.theme : fallback.theme,
+    logoUrl: pickOptionalString(value.logoUrl, readLegacyLogoUrl(value)),
+    primaryColor: pickString(value.primaryColor, readLegacyPrimaryColor(value, fallback.primaryColor)),
+    backgroundColor: pickString(
+      value.backgroundColor,
+      readLegacyBackgroundColor(value, fallback.backgroundColor),
+    ),
+    backgroundImageUrl: pickOptionalString(value.backgroundImageUrl, readLegacyBackgroundImageUrl(value)),
+    fontFamily: pickString(value.fontFamily, readLegacyFontFamily(value, fallback.fontFamily)),
+    header: {
+      title: pickString(header.title, fallback.header.title),
+      description: pickString(header.description, fallback.header.description),
+      logoPosition: pickOption(header.logoPosition, fallback.header.logoPosition, [
+        'left',
+        'center',
+        'right',
       ]),
+      logoSize: pickOption(header.logoSize, fallback.header.logoSize, ['sm', 'md', 'lg']),
     },
     submitButton: {
-      label: pickString(submitButton.label, DEFAULT_BUILDER_CONFIG.submitButton.label),
-      radius: pickOption(submitButton.radius, DEFAULT_BUILDER_CONFIG.submitButton.radius, [
-        'sm',
-        'md',
-        'lg',
+      text: pickString(submitButton.text, readLegacySubmitText(submitButton, fallback.submitButton.text)),
+      alignment: pickOption(submitButton.alignment, fallback.submitButton.alignment, [
+        'left',
+        'center',
+        'right',
       ]),
-      fullWidth: pickBoolean(submitButton.fullWidth, DEFAULT_BUILDER_CONFIG.submitButton.fullWidth),
     },
-    contentCard: {
-      enabled: pickBoolean(contentCard.enabled, DEFAULT_BUILDER_CONFIG.contentCard.enabled),
-      width: pickOption(contentCard.width, DEFAULT_BUILDER_CONFIG.contentCard.width, [
-        'narrow',
-        'default',
-        'wide',
-      ]),
-      radius: pickOption(contentCard.radius, DEFAULT_BUILDER_CONFIG.contentCard.radius, [
-        'sm',
-        'md',
-        'lg',
-      ]),
-      shadow: pickOption(contentCard.shadow, DEFAULT_BUILDER_CONFIG.contentCard.shadow, [
+    appearance: {
+      backgroundImageOpacity: pickNumber(
+        appearance.backgroundImageOpacity,
+        fallback.appearance.backgroundImageOpacity,
+      ),
+      headerCardOpacity: pickNumber(appearance.headerCardOpacity, fallback.appearance.headerCardOpacity),
+      questionCardOpacity: pickNumber(
+        appearance.questionCardOpacity,
+        fallback.appearance.questionCardOpacity,
+      ),
+      blurAmount: pickNumber(appearance.blurAmount, fallback.appearance.blurAmount),
+      borderRadius: pickNumber(appearance.borderRadius, fallback.appearance.borderRadius),
+      shadowStrength: pickOption(appearance.shadowStrength, fallback.appearance.shadowStrength, [
         'none',
         'sm',
         'md',
+        'lg',
       ]),
     },
+    hero: {
+      enabled: pickBoolean(hero.enabled, fallback.hero.enabled),
+    },
+    decoration: {
+      type: pickOption(decoration.type, fallback.decoration.type, ['none', 'wave', 'hero']),
+    },
   }
+}
+
+function readLegacyLogoUrl(value: Record<string, unknown>) {
+  const logo = isRecord(value.logo) ? value.logo : {}
+  const visible = typeof logo.visible === 'boolean' ? logo.visible : true
+
+  return visible ? pickOptionalString(logo.url) : undefined
+}
+
+function readLegacyPrimaryColor(value: Record<string, unknown>, fallback: string) {
+  const colors = isRecord(value.colors) ? value.colors : {}
+
+  return pickString(colors.primary, fallback)
+}
+
+function readLegacyBackgroundColor(value: Record<string, unknown>, fallback: string) {
+  const background = isRecord(value.background) ? value.background : {}
+
+  return pickString(background.color, fallback)
+}
+
+function readLegacyBackgroundImageUrl(value: Record<string, unknown>) {
+  const background = isRecord(value.background) ? value.background : {}
+
+  return pickOptionalString(background.imageUrl)
+}
+
+function readLegacyFontFamily(value: Record<string, unknown>, fallback: string) {
+  const typography = isRecord(value.typography) ? value.typography : {}
+
+  return pickString(typography.bodyFont, pickString(typography.headingFont, fallback))
+}
+
+function readLegacySubmitText(value: Record<string, unknown>, fallback: string) {
+  return pickString(value.label, fallback)
 }

@@ -1,4 +1,4 @@
-import { LoaderCircle, Save } from 'lucide-react'
+import { Eye, LoaderCircle, Pencil, Save } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { PublishButton } from '@/src/components/builder/publish-button'
@@ -10,6 +10,8 @@ import { useBuilderStore } from '@/src/stores/builder-store'
 export function BuilderTopbar() {
   const form = useBuilderStore((state) => state.form)
   const isDirty = useBuilderStore((state) => state.isDirty)
+  const builderMode = useBuilderStore((state) => state.builderMode)
+  const setBuilderMode = useBuilderStore((state) => state.setBuilderMode)
   const saveMutation = useSaveFormBuilder(form?.id ?? '')
   const saveLabel = saveMutation.isPending ? 'Saving...' : !isDirty && saveMutation.isSuccess ? 'Saved' : 'Save'
 
@@ -30,7 +32,29 @@ export function BuilderTopbar() {
       <div className="min-w-0">
         <h2 className="truncate text-sm font-semibold">{form?.title ?? 'Untitled form'}</h2>
       </div>
-      <ThemeSelector />
+      <div className="flex items-center gap-2">
+        <div className="flex rounded-lg border bg-muted/30 p-0.5">
+          <Button
+            type="button"
+            size="sm"
+            variant={builderMode === 'edit' ? 'default' : 'ghost'}
+            onClick={() => setBuilderMode('edit')}
+          >
+            <Pencil />
+            Edit
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={builderMode === 'preview' ? 'default' : 'ghost'}
+            onClick={() => setBuilderMode('preview')}
+          >
+            <Eye />
+            Preview
+          </Button>
+        </div>
+        <ThemeSelector />
+      </div>
       <div className="flex items-center justify-end gap-2">
         <Button disabled={!form || !isDirty || saveMutation.isPending} onClick={saveBuilder}>
           {saveMutation.isPending ? <LoaderCircle className="animate-spin" /> : <Save />}

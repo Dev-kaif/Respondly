@@ -1,9 +1,10 @@
 import { GripVertical } from 'lucide-react'
-import type { KeyboardEvent, ReactNode } from 'react'
+import type { KeyboardEvent, MouseEvent, ReactNode } from 'react'
 
 import { MultipleChoiceQuestion } from '@/src/components/builder/questions/multiple-choice-question'
 import { RatingQuestion } from '@/src/components/builder/questions/rating-question'
 import { TextQuestion } from '@/src/components/builder/questions/text-question'
+import { getSurveyCardStyle } from '@/src/components/survey-renderer/appearance'
 import { cn } from '@/lib/utils'
 import type { BuilderQuestion } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
@@ -16,11 +17,13 @@ type QuestionCardProps = {
 
 export function QuestionCard({ question, index, dragHandle }: QuestionCardProps) {
   const selectedQuestionId = useBuilderStore((state) => state.selectedQuestionId)
+  const builderConfig = useBuilderStore((state) => state.builderConfig)
   const selectQuestion = useBuilderStore((state) => state.selectQuestion)
   const isSelected = selectedQuestionId === question.id
   const handle = dragHandle ?? <GripVertical className="size-4" />
 
-  function selectCurrentQuestion() {
+  function selectCurrentQuestion(event?: MouseEvent<HTMLDivElement>) {
+    event?.stopPropagation()
     selectQuestion(question.id)
   }
 
@@ -37,8 +40,9 @@ export function QuestionCard({ question, index, dragHandle }: QuestionCardProps)
       tabIndex={0}
       onClick={selectCurrentQuestion}
       onKeyDown={handleKeyDown}
+      style={getSurveyCardStyle(builderConfig, 'question')}
       className={cn(
-        'w-full rounded-xl border bg-background p-4 text-left shadow-xs transition-colors hover:bg-muted/40 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
+        'w-full border p-4 text-left transition-colors hover:bg-muted/40 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
         isSelected && 'border-foreground/30 ring-2 ring-ring/20',
       )}
     >
