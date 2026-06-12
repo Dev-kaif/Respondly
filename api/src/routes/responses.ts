@@ -1,5 +1,5 @@
 import { stringify } from 'csv-stringify/sync'
-import { and, count, eq } from 'drizzle-orm'
+import { and, count, desc, eq } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { createDb } from '../db/index'
 import { answers, forms, questions, responses } from '../db/schema'
@@ -78,11 +78,16 @@ router.post('/survey/:slug/submit', async (c) => {
 // List Responses (Paginated)
 router.get('/forms/:id/responses', async (c) => {
   const user = c.get('user')
-  if (!user) return apiError(c, 401, 'Unauthorized')
+
+  if (!user) {
+    return apiError(c, 401, 'Unauthorized')
+  }
 
   const paginationParsed = paginationSchema.safeParse(c.req.query())
 
-  if (!paginationParsed.success) return validationError(c, paginationParsed.error)
+  if (!paginationParsed.success) {
+    return validationError(c, paginationParsed.error)
+  }
 
   const { page, limit } = paginationParsed.data
   const offset = (page - 1) * limit
@@ -95,11 +100,28 @@ router.get('/forms/:id/responses', async (c) => {
     .where(and(eq(forms.id, c.req.param('id')), eq(forms.userId, user.id)))
     .get()
 
-  if (!form) return apiError(c, 404, 'Form not found')
+  if (!form) {
+    return apiError(c, 404, 'Form not found')
+  }
 
   const [result, totalResult] = await Promise.all([
-    db.select().from(responses).where(eq(responses.formId, form.id)).limit(limit).offset(offset),
-    db.select({ count: count() }).from(responses).where(eq(responses.formId, form.id)),
+    db
+      .select({
+        id: responses.id,
+        submittedAt: responses.submittedAt,
+      })
+      .from(responses)
+      .where(eq(responses.formId, form.id))
+      .orderBy(desc(responses.submittedAt))
+      .limit(limit)
+      .offset(offset),
+
+    db
+      .select({
+        count: count(),
+      })
+      .from(responses)
+      .where(eq(responses.formId, form.id)),
   ])
 
   const total = totalResult[0]?.count ?? 0
