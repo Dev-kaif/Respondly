@@ -23,7 +23,7 @@ export function formatSubmittedAt(value: string | number | null | undefined) {
     minute: '2-digit',
   }).format(date)
 }
-export function getResponseNumber(response: FormResponseListItem, total: number, index: number) {
+export function getResponseNumber(_response: FormResponseListItem, total: number, index: number) {
   return Math.max(total - index, 1)
 }
 

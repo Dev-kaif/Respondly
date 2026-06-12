@@ -51,24 +51,24 @@ function FormsPage() {
         </CardHeader>
         <CardContent className="flex min-h-0 flex-1 flex-col">
           <div className="min-h-0 flex-1 overflow-auto pr-1">
-          {formsQuery.isLoading ? <FormListSkeleton count={5} /> : null}
-          {formsQuery.isError ? (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-              {formsQuery.error.message}
-            </div>
-          ) : null}
-          {formsQuery.isSuccess && forms.length === 0 ? (
-            <div className="rounded-lg border border-dashed bg-background p-8 text-center text-sm text-muted-foreground">
-              No forms yet. Create your first form to start collecting responses.
-            </div>
-          ) : null}
-          {forms.length > 0 ? (
-            <div className="space-y-3">
-              {forms.map((form) => (
-                <FormListItem key={form.id} form={form} />
-              ))}
-            </div>
-          ) : null}
+            {formsQuery.isLoading ? <FormListSkeleton count={5} /> : null}
+            {formsQuery.isError ? (
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+                {formsQuery.error.message}
+              </div>
+            ) : null}
+            {formsQuery.isSuccess && forms.length === 0 ? (
+              <div className="rounded-lg border border-dashed bg-background p-8 text-center text-sm text-muted-foreground">
+                No forms yet. Create your first form to start collecting responses.
+              </div>
+            ) : null}
+            {forms.length > 0 ? (
+              <div className="space-y-3">
+                {forms.map((form) => (
+                  <FormListItem key={form.id} form={form} />
+                ))}
+              </div>
+            ) : null}
           </div>
           {pagination && pagination.totalPages > 1 ? (
             <div className="mt-5 flex shrink-0 flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
@@ -100,8 +100,11 @@ function FormsPage() {
 function FormListSkeleton({ count }: { count: number }) {
   return (
     <div className="space-y-3">
-      {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="h-28 rounded-lg border bg-background px-5 py-4">
+      {Array.from({ length: count }, (_, i) => `forms-skeleton-${i}`).map((id) => (
+        <div
+          key={`forms-skeleton-${id}`}
+          className="h-28 rounded-lg border bg-background px-5 py-4"
+        >
           <div className="flex h-full items-center gap-4">
             <Skeleton className="size-10" />
             <div className="flex-1 space-y-2">

@@ -157,8 +157,14 @@ function SurveyHeader({
           minHeight: mode === 'builder' ? 180 : 240,
         }}
       >
-        <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-20" style={{ backgroundColor: '#ffffff' }} />
-        <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full opacity-10" style={{ backgroundColor: '#ffffff' }} />
+        <div
+          className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-20"
+          style={{ backgroundColor: '#ffffff' }}
+        />
+        <div
+          className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full opacity-10"
+          style={{ backgroundColor: '#ffffff' }}
+        />
         {builderConfig.logoUrl && (
           <img
             src={builderConfig.logoUrl}
@@ -285,10 +291,14 @@ function SurveyDecoration({ builderConfig }: { builderConfig: BuilderConfig }) {
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
       >
-        <path fill={builderConfig.primaryColor} opacity="0.12"
+        <path
+          fill={builderConfig.primaryColor}
+          opacity="0.12"
           d="M0,192L80,176C160,160,320,128,480,138.7C640,149,800,203,960,213.3C1120,224,1280,192,1360,176L1440,160L1440,320L0,320Z"
         />
-        <path fill={builderConfig.primaryColor} opacity="0.07"
+        <path
+          fill={builderConfig.primaryColor}
+          opacity="0.07"
           d="M0,224L80,213C160,202,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202L1440,192L1440,320L0,320Z"
         />
       </svg>
@@ -296,11 +306,15 @@ function SurveyDecoration({ builderConfig }: { builderConfig: BuilderConfig }) {
   }
   if (builderConfig.decoration.type === 'hero') {
     return (
-      <svg aria-hidden="true"
+      <svg
+        aria-hidden="true"
         className="pointer-events-none absolute right-0 top-0 h-80 w-1/2"
-        viewBox="0 0 500 500" preserveAspectRatio="xMidYMin slice"
+        viewBox="0 0 500 500"
+        preserveAspectRatio="xMidYMin slice"
       >
-        <path fill={builderConfig.primaryColor} opacity="0.08"
+        <path
+          fill={builderConfig.primaryColor}
+          opacity="0.08"
           d="M366.5,46.5C438.8,91.2,499.1,180.5,482.8,253.4C466.4,326.4,373.4,382.9,283.2,421.1C193.1,459.2,105.7,479,-4.1,477C-113.9,475,-246.2,451.2,-300.3,373.5C-354.4,295.8,-330.4,164.3,-263.8,88C-197.2,11.7,-88,-9.4,11.7,-18.9C111.4,-28.4,222.8,1.8,366.5,46.5Z"
         />
       </svg>

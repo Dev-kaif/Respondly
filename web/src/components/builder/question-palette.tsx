@@ -1,5 +1,5 @@
 import { useDraggable } from '@dnd-kit/core'
-import { AlignLeft, ListChecks, type LucideIcon, Star, GripVertical } from 'lucide-react'
+import { AlignLeft, GripVertical, ListChecks, type LucideIcon, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { QuestionType } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
@@ -41,13 +41,7 @@ type PaletteItemProps = {
 }
 
 function PaletteItem({ icon: Icon, label, type, onAdd }: PaletteItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    isDragging,
-  } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `palette-${type}`,
     data: {
       source: 'palette',
@@ -61,9 +55,7 @@ function PaletteItem({ icon: Icon, label, type, onAdd }: PaletteItemProps) {
       type="button"
       onClick={onAdd}
       style={{
-        transform: transform
-          ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-          : undefined,
+        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
       }}
       className={cn(
         'flex w-full items-center gap-3 rounded-lg border bg-card px-3 py-2.5 text-left text-sm shadow-xs transition-colors hover:bg-muted/60',

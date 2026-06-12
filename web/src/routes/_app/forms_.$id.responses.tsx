@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ChevronLeft, ChevronRight, Download, Pencil, RefreshCw } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -7,13 +7,13 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { DeleteResponseDialog } from '@/src/components/responses/delete-response-dialog'
+import { ResponseListItem } from '@/src/components/responses/response-list-item'
+import { useDeleteResponse } from '@/src/hooks/use-delete-response'
 import { useFormAnalytics } from '@/src/hooks/use-form-analytics'
 import { useFormResponses } from '@/src/hooks/use-form-responses'
 import { getFormResponse } from '@/src/lib/api'
 import { answersToCsv } from '@/src/lib/responses/format'
-import { ResponseListItem } from '@/src/components/responses/response-list-item'
-import { DeleteResponseDialog } from '@/src/components/responses/delete-response-dialog'
-import { useDeleteResponse } from '@/src/hooks/use-delete-response'
 
 export const Route = createFileRoute('/_app/forms_/$id/responses')({
   validateSearch: z.object({
@@ -21,7 +21,6 @@ export const Route = createFileRoute('/_app/forms_/$id/responses')({
   }),
   component: ResponsesPage,
 })
-
 
 function ResponsesPage() {
   const { id } = Route.useParams()
@@ -90,24 +89,17 @@ function ResponsesPage() {
       await toast.promise(deleteMutation.mutateAsync(), {
         loading: 'Deleting response...',
         success: 'Response deleted.',
-        error: (error) =>
-          error instanceof Error
-            ? error.message
-            : 'Failed to delete response.',
+        error: (error) => (error instanceof Error ? error.message : 'Failed to delete response.'),
       })
 
       setDeleteOpen(false)
       setDeleteResponseId(null)
 
-      await Promise.all([
-        responsesQuery.refetch(),
-        analyticsQuery.refetch(),
-      ])
+      await Promise.all([responsesQuery.refetch(), analyticsQuery.refetch()])
     } catch {
       // handled by toast
     }
   }
-
 
   return (
     <>
@@ -216,7 +208,11 @@ function ResponsesPage() {
                     <ChevronLeft />
                     Previous
                   </Button>
-                  <Button variant="outline" disabled={!canGoNext} onClick={() => goToPage(page + 1)}>
+                  <Button
+                    variant="outline"
+                    disabled={!canGoNext}
+                    onClick={() => goToPage(page + 1)}
+                  >
                     Next
                     <ChevronRight />
                   </Button>
@@ -231,15 +227,16 @@ function ResponsesPage() {
         onOpenChange={setDeleteOpen}
         onConfirm={() => void handleDeleteResponse()}
         isPending={deleteMutation.isPending}
-      /></>
+      />
+    </>
   )
 }
 
 function ResponseListSkeleton({ count }: { count: number }) {
   return (
     <div className="space-y-3">
-      {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="h-20 rounded-xl border bg-background p-4">
+      {Array.from({ length: count }, (_, i) => `responses-skeleton-${i}`).map((id) => (
+        <div key={`responses-skeleton-${id}`} className="h-20 rounded-xl border bg-background p-4">
           <Skeleton className="h-4 w-28" />
           <Skeleton className="mt-2 h-4 w-52" />
         </div>

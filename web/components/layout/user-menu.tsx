@@ -1,8 +1,6 @@
 import { useNavigate } from '@tanstack/react-router'
 import { ChevronsUpDown, LogOut } from 'lucide-react'
 import { useState } from 'react'
-
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,7 +45,10 @@ export function UserMenu({ user }: { user: UserMenuUser }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex w-full items-center gap-3 rounded-lg border bg-background p-2 text-left shadow-xs outline-none transition-colors hover:bg-muted/60 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50">
+        <button
+          type="button"
+          className="flex w-full items-center gap-3 rounded-lg border bg-background p-2 text-left shadow-xs outline-none transition-colors hover:bg-muted/60 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
           <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-primary text-sm font-medium text-primary-foreground">
             {user.image ? (
               <img src={user.image} alt="" className="size-full object-cover" />

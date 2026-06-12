@@ -7,9 +7,10 @@ export function MultipleChoiceQuestion({ question }: { question: MultipleChoiceB
         {question.title}
         {question.required ? <span className="ml-1 text-destructive">*</span> : null}
       </p>
+
       <div className="space-y-2">
-        {question.options.map((option, index) => (
-          <div key={`${question.id}-${index}`} className="flex items-center gap-2 text-sm">
+        {question.options.map((option) => (
+          <div key={`${question.id}-option-${option}`} className="flex items-center gap-2 text-sm">
             <span className="size-3 rounded-full border" />
             <span>{option}</span>
           </div>

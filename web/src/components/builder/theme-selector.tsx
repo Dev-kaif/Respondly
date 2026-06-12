@@ -24,9 +24,7 @@ export function ThemeSelector({ disabled = false }: ThemeSelectorProps) {
   const builderConfig = useBuilderStore((state) => state.builderConfig)
   const updateBuilderConfig = useBuilderStore((state) => state.updateBuilderConfig)
 
-  const selectedTheme = THEME_OPTIONS.find(
-    (theme) => theme.id === builderConfig.theme,
-  )
+  const selectedTheme = THEME_OPTIONS.find((theme) => theme.id === builderConfig.theme)
 
   function selectTheme(theme: ThemeId) {
     if (disabled || theme === builderConfig.theme) {
@@ -81,14 +79,10 @@ export function ThemeSelector({ disabled = false }: ThemeSelectorProps) {
           >
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
               <span>{theme.name}</span>
-              <span className="truncate text-xs text-muted-foreground">
-                {theme.description}
-              </span>
+              <span className="truncate text-xs text-muted-foreground">{theme.description}</span>
             </span>
 
-            {theme.id === builderConfig.theme ? (
-              <Check className="ml-auto" />
-            ) : null}
+            {theme.id === builderConfig.theme ? <Check className="ml-auto" /> : null}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

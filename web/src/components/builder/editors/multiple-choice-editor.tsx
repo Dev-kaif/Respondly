@@ -87,7 +87,7 @@ export function MultipleChoiceEditor({ question }: { question: MultipleChoiceBui
         <FieldLabel>Options</FieldLabel>
         <div className="space-y-2">
           {question.options.map((option, index) => (
-            <div key={`${question.id}-option-${index}`} className="flex items-center gap-2">
+            <div key={`${question.id}-option-${option}`} className="flex items-center gap-2">
               <Input value={option} onChange={(event) => updateOption(index, event.target.value)} />
               <Button
                 type="button"

@@ -22,6 +22,11 @@ export function BuilderCanvas() {
       className="min-w-0 flex-1 overflow-auto bg-muted/30 p-6"
       data-over={isOver}
       onClick={() => selectQuestion(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          selectQuestion(null)
+        }
+      }}
     >
       <SurveyRenderer
         mode="builder"

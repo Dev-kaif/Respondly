@@ -70,7 +70,10 @@ export function CreateFormDialog({ variant = 'button' }: CreateFormDialogProps) 
 
   const trigger =
     variant === 'card' ? (
-      <button className="flex w-full items-center gap-4 rounded-xl border border-dashed bg-background p-5 text-left shadow-xs transition-colors hover:border-foreground/30 hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+      <button
+        type="button"
+        className="flex w-full items-center gap-4 rounded-xl border border-dashed bg-background p-5 text-left shadow-xs transition-colors hover:border-foreground/30 hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+      >
         <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <Plus className="size-5" />
         </span>

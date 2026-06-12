@@ -55,8 +55,8 @@ function DashboardPage() {
 function FormListSkeleton({ count }: { count: number }) {
   return (
     <div className="space-y-3">
-      {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="rounded-xl border bg-background p-4">
+      {Array.from({ length: count }, (_, i) => `dashboard-skeleton-${i}`).map((id) => (
+        <div key={`dashboard-skeleton-${id}`} className="rounded-xl border bg-background p-4">
           <div className="flex gap-3">
             <Skeleton className="size-10" />
             <div className="flex-1 space-y-2">

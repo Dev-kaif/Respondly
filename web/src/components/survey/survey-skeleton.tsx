@@ -10,8 +10,11 @@ export function SurveySkeleton() {
           <Skeleton className="mt-3 h-4 w-full" />
           <Skeleton className="mt-2 h-4 w-4/5" />
         </section>
-        {Array.from({ length: 3 }).map((_, index) => (
-          <section key={index} className="rounded-lg border bg-background p-4 shadow-sm">
+        {Array.from({ length: 3 }, (_, i) => `survey-skeleton-${i}`).map((id) => (
+          <section
+            key={`survey-skeleton-${id}`}
+            className="rounded-lg border bg-background p-4 shadow-sm"
+          >
             <div className="flex gap-3">
               <Skeleton className="size-7 shrink-0" />
               <div className="flex-1 space-y-3">

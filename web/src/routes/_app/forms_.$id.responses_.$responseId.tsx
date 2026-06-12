@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, LoaderCircle, Trash2 } from 'lucide-react'
+import { ArrowLeft, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -7,10 +7,10 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { DeleteResponseDialog } from '@/src/components/responses/delete-response-dialog'
 import { useDeleteResponse } from '@/src/hooks/use-delete-response'
 import { useFormResponse } from '@/src/hooks/use-form-response'
 import { formatSubmittedAt } from '@/src/lib/responses/format'
-import { DeleteResponseDialog } from '@/src/components/responses/delete-response-dialog'
 
 export const Route = createFileRoute('/_app/forms_/$id/responses_/$responseId')({
   validateSearch: z.object({
@@ -104,8 +104,8 @@ function ResponseDetailPage() {
 function ResponseDetailSkeleton({ count }: { count: number }) {
   return (
     <div className="space-y-4">
-      {Array.from({ length: count }).map((_, index) => (
-        <Card key={index}>
+      {Array.from({ length: count }, (_, i) => `response-skeleton-${i}`).map((id) => (
+        <Card key={`response-skeleton-${id}`}>
           <CardHeader>
             <Skeleton className="h-5 w-1/2" />
           </CardHeader>

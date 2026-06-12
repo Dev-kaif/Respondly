@@ -18,15 +18,16 @@ export function QuestionCard({ question, index, dragHandle }: QuestionCardProps)
   const selectedQuestionId = useBuilderStore((state) => state.selectedQuestionId)
   const builderConfig = useBuilderStore((state) => state.builderConfig)
   const selectQuestion = useBuilderStore((state) => state.selectQuestion)
+
   const isSelected = selectedQuestionId === question.id
   const handle = dragHandle ?? <GripVertical className="size-4" />
 
-  function selectCurrentQuestion(event?: MouseEvent<HTMLDivElement>) {
+  function selectCurrentQuestion(event?: MouseEvent<HTMLButtonElement>) {
     event?.stopPropagation()
     selectQuestion(question.id)
   }
 
-  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+  function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
       selectCurrentQuestion()
@@ -34,9 +35,8 @@ export function QuestionCard({ question, index, dragHandle }: QuestionCardProps)
   }
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <button
+      type="button"
       onClick={selectCurrentQuestion}
       onKeyDown={handleKeyDown}
       style={getSurveyCardStyle(builderConfig, 'question')}
@@ -49,15 +49,18 @@ export function QuestionCard({ question, index, dragHandle }: QuestionCardProps)
         <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-xs font-medium text-muted-foreground">
           {index + 1}
         </span>
+
         <div className="min-w-0 flex-1">
           {question.type === 'multiple_choice' ? (
             <MultipleChoiceQuestion question={question} />
           ) : null}
+
           {question.type === 'rating' ? <RatingQuestion question={question} /> : null}
+
           {question.type === 'text' ? <TextQuestion question={question} /> : null}
         </div>
         {handle}
       </div>
-    </div>
+    </button>
   )
 }

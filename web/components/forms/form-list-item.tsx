@@ -87,9 +87,7 @@ export function FormListItem({ form }: FormListItemProps) {
 
             <div className="flex h-full min-w-0 flex-1 flex-col justify-center">
               <div className="flex items-center gap-2">
-                <h3 className="truncate text-base font-semibold text-foreground">
-                  {form.title}
-                </h3>
+                <h3 className="truncate text-base font-semibold text-foreground">{form.title}</h3>
 
                 <span
                   className={cn(
@@ -128,20 +126,13 @@ export function FormListItem({ form }: FormListItemProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label={`Actions for ${form.title}`}
-              >
+              <Button variant="ghost" size="icon" aria-label={`Actions for ${form.title}`}>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onSelect={openForm}
-                disabled={analyticsQuery.isLoading}
-              >
+              <DropdownMenuItem onSelect={openForm} disabled={analyticsQuery.isLoading}>
                 <ExternalLink />
                 Open
               </DropdownMenuItem>
@@ -181,17 +172,9 @@ export function FormListItem({ form }: FormListItemProps) {
         </div>
       </div>
 
-      <RenameFormDialog
-        form={form}
-        open={renameOpen}
-        onOpenChange={setRenameOpen}
-      />
+      <RenameFormDialog form={form} open={renameOpen} onOpenChange={setRenameOpen} />
 
-      <DeleteFormDialog
-        form={form}
-        open={deleteOpen}
-        onOpenChange={setDeleteOpen}
-      />
+      <DeleteFormDialog form={form} open={deleteOpen} onOpenChange={setDeleteOpen} />
     </>
   )
 }
