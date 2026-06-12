@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SurveySlugRouteImport } from './routes/survey.$slug'
 import { Route as BuilderIdRouteImport } from './routes/builder.$id'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
@@ -24,6 +25,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SurveySlugRoute = SurveySlugRouteImport.update({
+  id: '/survey/$slug',
+  path: '/survey/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BuilderIdRoute = BuilderIdRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/builder/$id': typeof BuilderIdRoute
+  '/survey/$slug': typeof SurveySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/builder/$id': typeof BuilderIdRoute
+  '/survey/$slug': typeof SurveySlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/builder/$id': typeof BuilderIdRoute
+  '/survey/$slug': typeof SurveySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/builder/$id'
+    | '/survey/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/builder/$id'
+    | '/survey/$slug'
   id:
     | '__root__'
     | '/'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/builder/$id'
+    | '/survey/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,6 +124,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   BuilderIdRoute: typeof BuilderIdRoute
+  SurveySlugRoute: typeof SurveySlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/survey/$slug': {
+      id: '/survey/$slug'
+      path: '/survey/$slug'
+      fullPath: '/survey/$slug'
+      preLoaderRoute: typeof SurveySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/builder/$id': {
@@ -186,6 +206,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   BuilderIdRoute: BuilderIdRoute,
+  SurveySlugRoute: SurveySlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

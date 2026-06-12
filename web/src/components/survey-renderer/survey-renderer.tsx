@@ -19,6 +19,7 @@ type SurveyRendererProps = {
   questions: BuilderQuestion[]
   builderConfig: BuilderConfig
   renderQuestions?: (questions: BuilderQuestion[]) => ReactNode
+  renderSubmit?: () => ReactNode
   emptyState?: ReactNode
   className?: string
 }
@@ -30,6 +31,7 @@ export function SurveyRenderer({
   questions,
   builderConfig,
   renderQuestions,
+  renderSubmit,
   emptyState,
   className,
 }: SurveyRendererProps) {
@@ -74,7 +76,7 @@ export function SurveyRenderer({
                 ))}
               </div>
             )}
-            <SubmitPreview builderConfig={builderConfig} />
+            {renderSubmit ? renderSubmit() : <SubmitPreview builderConfig={builderConfig} />}
           </>
         ) : (
           emptyState

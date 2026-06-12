@@ -81,6 +81,18 @@ type ApiErrorBody = {
   details?: unknown
 }
 
+export class ApiRequestError extends Error {
+  status: number
+  details?: unknown
+
+  constructor(message: string, status: number, details?: unknown) {
+    super(message)
+    this.name = 'ApiRequestError'
+    this.status = status
+    this.details = details
+  }
+}
+
 async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
     credentials: 'include',
@@ -93,15 +105,17 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
 
   if (!response.ok) {
     let message = 'Request failed. Please try again.'
+    let details: unknown
 
     try {
       const body = (await response.json()) as ApiErrorBody
       message = body.error || message
+      details = body.details
     } catch {
       message = response.statusText || message
     }
 
-    throw new Error(message)
+    throw new ApiRequestError(message, response.status, details)
   }
 
   return response.json() as Promise<T>
@@ -197,6 +211,34 @@ export function unpublishForm(id: string) {
 export function duplicateForm(id: string) {
   return apiRequest<FormResponse>(`/api/forms/${id}/duplicate`, {
     method: 'POST',
+  })
+}
+
+export type PublicSurveyResponse = {
+  id: string
+  title: string
+  description: string | null
+  slug: string
+  theme: string
+  builderConfig: string | null
+  questions: ApiQuestion[]
+}
+
+export type SubmitSurveyPayload = {
+  answers: Array<{
+    questionId: string
+    value: string
+  }>
+}
+
+export function getPublicSurvey(slug: string) {
+  return apiRequest<PublicSurveyResponse>(`/api/survey/${slug}`)
+}
+
+export function submitPublicSurvey(slug: string, payload: SubmitSurveyPayload) {
+  return apiRequest<{ success: true }>(`/api/survey/${slug}/submit`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
   })
 }
 
