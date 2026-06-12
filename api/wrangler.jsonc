@@ -19,6 +19,8 @@
       "database_id": "a1490984-b639-4c92-8613-56dbf5cbeb70"
     }
   ],
+  "migrations_dir": "drizzle",
+
   "vars": {
     "BETTER_AUTH_URL": "http://localhost:8787"
   }

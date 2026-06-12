@@ -1,16 +1,15 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 import { authMiddleware } from './middleware/auth'
 import auth from './routes/auth'
 import forms from './routes/forms'
 import questions from './routes/questions'
 import responses from './routes/responses'
 import type { Bindings, Variables } from './types'
-import { cors } from 'hono/cors'
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
   strict: false,
 })
-
 
 app.use(
   '*',
@@ -21,7 +20,6 @@ app.use(
     allowHeaders: ['Content-Type', 'Authorization'],
   }),
 )
-
 
 app.use('*', authMiddleware)
 

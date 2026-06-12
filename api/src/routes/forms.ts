@@ -134,6 +134,8 @@ router.put('/forms/:id', async (c) => {
       ...(body.logoUrl !== undefined && { logoUrl: body.logoUrl }),
       ...(body.backgroundUrl !== undefined && { backgroundUrl: body.backgroundUrl }),
       ...(body.isPublished !== undefined && { isPublished: body.isPublished }),
+      ...(body.theme !== undefined && { theme: body.theme }),
+      ...(body.builderConfig !== undefined && { builderConfig: body.builderConfig }),
       updatedAt: new Date(),
     })
     .where(eq(forms.id, c.req.param('id')))
@@ -276,6 +278,7 @@ router.post('/forms/:id/duplicate', async (c) => {
       primaryColor: original.primaryColor,
       logoUrl: original.logoUrl,
       backgroundUrl: original.backgroundUrl,
+      builderConfig: original.builderConfig,
       isPublished: false,
     })
     .returning()
@@ -291,6 +294,7 @@ router.post('/forms/:id/duplicate', async (c) => {
         required: q.required,
         position: q.position,
         optionsJson: q.optionsJson,
+        settingsJson: q.settingsJson,
       })),
     )
   }
@@ -325,6 +329,7 @@ router.get('/survey/:slug', async (c) => {
     primaryColor: form.primaryColor,
     logoUrl: form.logoUrl,
     backgroundUrl: form.backgroundUrl,
+    builderConfig: form.builderConfig,
     questions: formQuestions.map((q) => ({
       id: q.id,
       type: q.type,
@@ -333,6 +338,7 @@ router.get('/survey/:slug', async (c) => {
       required: q.required,
       position: q.position,
       optionsJson: q.optionsJson,
+      settingsJson: q.settingsJson,
     })),
   })
 })

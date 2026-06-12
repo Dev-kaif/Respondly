@@ -26,6 +26,8 @@ export const forms = sqliteTable('forms', {
 
   backgroundUrl: text('background_url'),
 
+  builderConfig: text('builder_config'),
+
   isPublished: integer('is_published', {
     mode: 'boolean',
   })
@@ -70,6 +72,8 @@ export const questions = sqliteTable('questions', {
   position: integer('position').notNull(),
 
   optionsJson: text('options_json'),
+
+  settingsJson: text('settings_json'),
 
   createdAt: integer('created_at', {
     mode: 'timestamp_ms',

@@ -94,6 +94,7 @@ router.put('/questions/:id', async (c) => {
       ...(body.required !== undefined && { required: body.required }),
       ...(body.type !== undefined && { type: body.type }),
       ...(body.options !== undefined && { optionsJson: JSON.stringify(body.options) }),
+      ...(body.settingsJson !== undefined && { settingsJson: body.settingsJson }),
     })
     .where(eq(questions.id, c.req.param('id')))
     .returning()

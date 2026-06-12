@@ -51,6 +51,8 @@ export const updateFormSchema = z.object({
   logoUrl: z.string().url('Must be a valid URL').optional().nullable(),
   backgroundUrl: z.string().url('Must be a valid URL').optional().nullable(),
   isPublished: z.boolean().optional(),
+  builderConfig: z.string().optional().nullable(),
+  theme: z.enum(['minimal', 'corporate', 'wave', 'hero', 'custom']).optional(),
 })
 
 export const renameFormSchema = z.object({
@@ -84,6 +86,7 @@ export const updateQuestionSchema = z
     placeholder: z.string().max(200).optional().nullable(),
     required: z.boolean().optional(),
     options: multipleChoiceOptions.optional(),
+    settingsJson: z.string().optional().nullable(),
   })
   .refine(
     (d) => {
