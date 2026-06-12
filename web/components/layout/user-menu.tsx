@@ -49,7 +49,11 @@ export function UserMenu({ user }: { user: UserMenuUser }) {
       <DropdownMenuTrigger asChild>
         <button className="flex w-full items-center gap-3 rounded-lg border bg-background p-2 text-left shadow-xs outline-none transition-colors hover:bg-muted/60 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50">
           <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-primary text-sm font-medium text-primary-foreground">
-            {user.image ? <img src={user.image} alt="" className="size-full object-cover" /> : getInitials(user.name, user.email)}
+            {user.image ? (
+              <img src={user.image} alt="" className="size-full object-cover" />
+            ) : (
+              getInitials(user.name, user.email)
+            )}
           </span>
           <span className="min-w-0 flex-1">
             <span className="block truncate text-sm font-medium">{user.name || 'Account'}</span>
@@ -66,15 +70,25 @@ export function UserMenu({ user }: { user: UserMenuUser }) {
       >
         <DropdownMenuLabel className="flex items-center gap-3">
           <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-primary text-xs font-medium text-primary-foreground">
-            {user.image ? <img src={user.image} alt="" className="size-full object-cover" /> : getInitials(user.name, user.email)}
+            {user.image ? (
+              <img src={user.image} alt="" className="size-full object-cover" />
+            ) : (
+              getInitials(user.name, user.email)
+            )}
           </span>
           <span className="min-w-0">
             <span className="block truncate">{user.name || 'Account'}</span>
-            <span className="block truncate text-xs font-normal text-muted-foreground">{user.email}</span>
+            <span className="block truncate text-xs font-normal text-muted-foreground">
+              {user.email}
+            </span>
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onSelect={() => void handleLogout()} disabled={isLoggingOut}>
+        <DropdownMenuItem
+          variant="destructive"
+          onSelect={() => void handleLogout()}
+          disabled={isLoggingOut}
+        >
           <LogOut />
           {isLoggingOut ? 'Logging out...' : 'Logout'}
         </DropdownMenuItem>

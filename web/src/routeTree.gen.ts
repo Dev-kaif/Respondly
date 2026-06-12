@@ -15,6 +15,7 @@ import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AppFormsRouteImport } from './routes/_app/forms'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppFormsFormIdRouteImport } from './routes/_app/forms.$formId'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -45,35 +46,55 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFormsFormIdRoute = AppFormsFormIdRouteImport.update({
+  id: '/$formId',
+  path: '/$formId',
+  getParentRoute: () => AppFormsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
-  '/forms': typeof AppFormsRoute
+  '/forms': typeof AppFormsRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/forms/$formId': typeof AppFormsFormIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
-  '/forms': typeof AppFormsRoute
+  '/forms': typeof AppFormsRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/forms/$formId': typeof AppFormsFormIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
-  '/_app/forms': typeof AppFormsRoute
+  '/_app/forms': typeof AppFormsRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/_app/forms/$formId': typeof AppFormsFormIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/forms' | '/auth/login' | '/auth/signup'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/forms'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/forms/$formId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/forms' | '/auth/login' | '/auth/signup'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/forms'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/forms/$formId'
   id:
     | '__root__'
     | '/'
@@ -82,6 +103,7 @@ export interface FileRouteTypes {
     | '/_app/forms'
     | '/auth/login'
     | '/auth/signup'
+    | '/_app/forms/$formId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -135,17 +157,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/forms/$formId': {
+      id: '/_app/forms/$formId'
+      path: '/$formId'
+      fullPath: '/forms/$formId'
+      preLoaderRoute: typeof AppFormsFormIdRouteImport
+      parentRoute: typeof AppFormsRoute
+    }
   }
 }
 
+interface AppFormsRouteChildren {
+  AppFormsFormIdRoute: typeof AppFormsFormIdRoute
+}
+
+const AppFormsRouteChildren: AppFormsRouteChildren = {
+  AppFormsFormIdRoute: AppFormsFormIdRoute,
+}
+
+const AppFormsRouteWithChildren = AppFormsRoute._addFileChildren(
+  AppFormsRouteChildren,
+)
+
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
-  AppFormsRoute: typeof AppFormsRoute
+  AppFormsRoute: typeof AppFormsRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
-  AppFormsRoute: AppFormsRoute,
+  AppFormsRoute: AppFormsRouteWithChildren,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

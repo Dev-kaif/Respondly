@@ -69,14 +69,14 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       try {
         const response = isSignup
           ? await authClient.signUp.email({
-            name: value.name,
-            email: value.email,
-            password: value.password,
-          })
+              name: value.name,
+              email: value.email,
+              password: value.password,
+            })
           : await authClient.signIn.email({
-            email: value.email,
-            password: value.password,
-          })
+              email: value.email,
+              password: value.password,
+            })
 
         if (response.error) {
           setFormError(getErrorMessage(response.error))
@@ -110,7 +110,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
           <Card className="w-full border bg-background/90 shadow-2xl shadow-slate-950/10 backdrop-blur">
             <CardHeader>
-              <CardTitle className="text-xl">{isSignup ? 'Create your account' : 'Welcome back'}</CardTitle>
+              <CardTitle className="text-xl">
+                {isSignup ? 'Create your account' : 'Welcome back'}
+              </CardTitle>
               <CardDescription>
                 {isSignup
                   ? 'Start with your name, email, and a secure password.'
@@ -130,7 +132,8 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                   {isSignup ? (
                     <form.Field name="name">
                       {(field) => {
-                        const isInvalid = field.state.meta.isTouched && field.state.meta.errors.length > 0
+                        const isInvalid =
+                          field.state.meta.isTouched && field.state.meta.errors.length > 0
 
                         return (
                           <Field data-invalid={isInvalid}>
@@ -153,7 +156,8 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
                   <form.Field name="email">
                     {(field) => {
-                      const isInvalid = field.state.meta.isTouched && field.state.meta.errors.length > 0
+                      const isInvalid =
+                        field.state.meta.isTouched && field.state.meta.errors.length > 0
 
                       return (
                         <Field data-invalid={isInvalid}>
@@ -176,7 +180,8 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
                   <form.Field name="password">
                     {(field) => {
-                      const isInvalid = field.state.meta.isTouched && field.state.meta.errors.length > 0
+                      const isInvalid =
+                        field.state.meta.isTouched && field.state.meta.errors.length > 0
 
                       return (
                         <Field data-invalid={isInvalid}>
@@ -205,7 +210,12 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
                   <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
                     {([canSubmit, isSubmitting]) => (
-                      <Button className="w-full" size="lg" type="submit" disabled={!canSubmit || isSubmitting}>
+                      <Button
+                        className="w-full"
+                        size="lg"
+                        type="submit"
+                        disabled={!canSubmit || isSubmitting}
+                      >
                         {isSubmitting ? <Loader2 className="animate-spin" /> : null}
                         {isSubmitting ? 'Please wait' : isSignup ? 'Create account' : 'Sign in'}
                       </Button>
@@ -217,7 +227,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             <CardFooter className="justify-center text-sm text-muted-foreground">
               {isSignup ? 'Already have an account?' : 'New to Survey Builder?'}{' '}
               <Button asChild variant="link" className="h-auto px-1">
-                <Link to={isSignup ? '/auth/login' : '/auth/signup'}>{isSignup ? 'Sign in' : 'Create one'}</Link>
+                <Link to={isSignup ? '/auth/login' : '/auth/signup'}>
+                  {isSignup ? 'Sign in' : 'Create one'}
+                </Link>
               </Button>
             </CardFooter>
           </Card>

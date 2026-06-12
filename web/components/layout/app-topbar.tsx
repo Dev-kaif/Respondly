@@ -7,7 +7,9 @@ const pageTitles: Record<string, string> = {
 
 export function AppTopbar() {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
-  const title = pageTitles[pathname] ?? 'Survey Builder'
+  const title = pathname.startsWith('/forms/')
+    ? 'Form Editor'
+    : (pageTitles[pathname] ?? 'Survey Builder')
 
   return (
     <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center border-b bg-background/90 px-6 backdrop-blur">
