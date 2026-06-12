@@ -52,7 +52,7 @@ export function FormListItem({ form }: FormListItemProps) {
   }
 
   function openForm() {
-    void navigate({ to: '/forms/$formId', params: { formId: form.id }, search: { page: 1 } })
+    void navigate({ to: '/builder/$id', params: { id: form.id }, search: { page: 1 } })
   }
 
   return (
@@ -64,8 +64,8 @@ export function FormListItem({ form }: FormListItemProps) {
         )}
       >
         <Link
-          to="/forms/$formId"
-          params={{ formId: form.id }}
+          to="/builder/$id"
+          params={{ id: form.id }}
           search={{ page: 1 }}
           className="min-w-0 outline-none"
         >

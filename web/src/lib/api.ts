@@ -8,9 +8,29 @@ export type FormResponse = {
   primaryColor: string | null
   logoUrl: string | null
   backgroundUrl: string | null
+  builderConfig: string | null
   isPublished: boolean
   createdAt: string | number
   updatedAt: string | number
+}
+
+export type ApiQuestion = {
+  id: string
+  formId: string
+  type: string
+  title: string
+  placeholder: string | null
+  required: boolean
+  position: number
+  optionsJson: string | null
+  settingsJson: string | null
+  createdAt: string | number
+}
+
+export type BuilderForm = FormResponse
+
+export type FormDetailResponse = BuilderForm & {
+  questions: ApiQuestion[]
 }
 
 export type PaginationMeta = {
@@ -37,6 +57,23 @@ export type CreateFormPayload = {
 
 export type RenameFormPayload = {
   title: string
+}
+
+export type SaveFormBuilderPayload = {
+  title: string
+  description: string | null
+  theme: string
+  builderConfig: string
+}
+
+export type SaveQuestionPayload = {
+  type: ApiQuestion['type']
+  title: string
+  placeholder: string | null
+  required: boolean
+  position: number
+  optionsJson: string | null
+  settingsJson: string | null
 }
 
 type ApiErrorBody = {
@@ -73,6 +110,7 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
 export const formsQueryKeys = {
   all: ['forms'] as const,
   list: (params: Required<FormsQueryParams>) => [...formsQueryKeys.all, 'list', params] as const,
+  detail: (id: string) => ['form', id] as const,
 }
 
 export function getForms(params: FormsQueryParams = {}) {
@@ -84,6 +122,10 @@ export function getForms(params: FormsQueryParams = {}) {
   })
 
   return apiRequest<PaginatedFormsResponse>(`/api/forms?${searchParams.toString()}`)
+}
+
+export function getForm(id: string) {
+  return apiRequest<FormDetailResponse>(`/api/forms/${id}`)
 }
 
 export function createForm(payload: CreateFormPayload) {
@@ -103,6 +145,52 @@ export function renameForm(id: string, payload: RenameFormPayload) {
 export function deleteForm(id: string) {
   return apiRequest<{ success: true }>(`/api/forms/${id}`, {
     method: 'DELETE',
+  })
+}
+
+export function saveFormBuilder(id: string, payload: SaveFormBuilderPayload) {
+  return apiRequest<BuilderForm>(`/api/forms/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function createQuestion(formId: string, payload: SaveQuestionPayload) {
+  return apiRequest<ApiQuestion>(`/api/forms/${formId}/questions`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function updateQuestion(id: string, payload: SaveQuestionPayload) {
+  return apiRequest<ApiQuestion>(`/api/questions/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function deleteQuestion(id: string) {
+  return apiRequest<{ success: true }>(`/api/questions/${id}`, {
+    method: 'DELETE',
+  })
+}
+
+export function reorderQuestions(formId: string, ids: string[]) {
+  return apiRequest<{ success: true }>(`/api/forms/${formId}/questions/reorder`, {
+    method: 'PATCH',
+    body: JSON.stringify({ ids }),
+  })
+}
+
+export function publishForm(id: string) {
+  return apiRequest<BuilderForm>(`/api/forms/${id}/publish`, {
+    method: 'POST',
+  })
+}
+
+export function unpublishForm(id: string) {
+  return apiRequest<BuilderForm>(`/api/forms/${id}/unpublish`, {
+    method: 'POST',
   })
 }
 

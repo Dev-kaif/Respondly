@@ -11,11 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BuilderIdRouteImport } from './routes/builder.$id'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AppFormsRouteImport } from './routes/_app/forms'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
-import { Route as AppFormsFormIdRouteImport } from './routes/_app/forms.$formId'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -24,6 +24,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuilderIdRoute = BuilderIdRouteImport.update({
+  id: '/builder/$id',
+  path: '/builder/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthSignupRoute = AuthSignupRouteImport.update({
@@ -46,37 +51,32 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppFormsFormIdRoute = AppFormsFormIdRouteImport.update({
-  id: '/$formId',
-  path: '/$formId',
-  getParentRoute: () => AppFormsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
-  '/forms': typeof AppFormsRouteWithChildren
+  '/forms': typeof AppFormsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/forms/$formId': typeof AppFormsFormIdRoute
+  '/builder/$id': typeof BuilderIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AppDashboardRoute
-  '/forms': typeof AppFormsRouteWithChildren
+  '/forms': typeof AppFormsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/forms/$formId': typeof AppFormsFormIdRoute
+  '/builder/$id': typeof BuilderIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
-  '/_app/forms': typeof AppFormsRouteWithChildren
+  '/_app/forms': typeof AppFormsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/_app/forms/$formId': typeof AppFormsFormIdRoute
+  '/builder/$id': typeof BuilderIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -86,7 +86,7 @@ export interface FileRouteTypes {
     | '/forms'
     | '/auth/login'
     | '/auth/signup'
-    | '/forms/$formId'
+    | '/builder/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -94,7 +94,7 @@ export interface FileRouteTypes {
     | '/forms'
     | '/auth/login'
     | '/auth/signup'
-    | '/forms/$formId'
+    | '/builder/$id'
   id:
     | '__root__'
     | '/'
@@ -103,7 +103,7 @@ export interface FileRouteTypes {
     | '/_app/forms'
     | '/auth/login'
     | '/auth/signup'
-    | '/_app/forms/$formId'
+    | '/builder/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -111,6 +111,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
+  BuilderIdRoute: typeof BuilderIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -127,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/builder/$id': {
+      id: '/builder/$id'
+      path: '/builder/$id'
+      fullPath: '/builder/$id'
+      preLoaderRoute: typeof BuilderIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/signup': {
@@ -157,36 +165,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/forms/$formId': {
-      id: '/_app/forms/$formId'
-      path: '/$formId'
-      fullPath: '/forms/$formId'
-      preLoaderRoute: typeof AppFormsFormIdRouteImport
-      parentRoute: typeof AppFormsRoute
-    }
   }
 }
 
-interface AppFormsRouteChildren {
-  AppFormsFormIdRoute: typeof AppFormsFormIdRoute
-}
-
-const AppFormsRouteChildren: AppFormsRouteChildren = {
-  AppFormsFormIdRoute: AppFormsFormIdRoute,
-}
-
-const AppFormsRouteWithChildren = AppFormsRoute._addFileChildren(
-  AppFormsRouteChildren,
-)
-
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
-  AppFormsRoute: typeof AppFormsRouteWithChildren
+  AppFormsRoute: typeof AppFormsRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
-  AppFormsRoute: AppFormsRouteWithChildren,
+  AppFormsRoute: AppFormsRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -196,6 +185,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
+  BuilderIdRoute: BuilderIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
