@@ -9,7 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { getThemePreset, THEME_OPTIONS, type ThemeId } from '@/src/components/builder/themes/presets'
+import {
+  getThemePreset,
+  THEME_OPTIONS,
+  type ThemeId,
+} from '@/src/components/builder/themes/presets'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 export function ThemeSelector() {

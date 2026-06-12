@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { MultipleChoiceQuestion } from '@/src/components/builder/questions/multiple-choice-question'
 import { RatingQuestion } from '@/src/components/builder/questions/rating-question'
 import { TextQuestion } from '@/src/components/builder/questions/text-question'
@@ -10,7 +11,6 @@ import {
 } from '@/src/components/survey-renderer/appearance'
 import type { BuilderConfig } from '@/src/lib/builder-config'
 import type { BuilderQuestion } from '@/src/lib/builder-questions'
-import { cn } from '@/lib/utils'
 
 type SurveyRendererProps = {
   mode?: 'builder' | 'preview' | 'public'
@@ -97,11 +97,19 @@ function SurveyHeader({
 }) {
   const headerTitle = builderConfig.header.title || title
   const headerDescription = builderConfig.header.description || description
+
   const logoAlignment = {
     left: 'items-start text-left',
     center: 'items-center text-center',
     right: 'items-end text-right',
   }[builderConfig.header.logoPosition]
+
+  const descriptionAlignment = {
+    left: 'mr-auto',
+    center: 'mx-auto',
+    right: 'ml-auto',
+  }[builderConfig.header.logoPosition]
+
   const logoSize = {
     sm: 'h-8 max-w-32',
     md: 'h-10 max-w-40',
@@ -111,9 +119,9 @@ function SurveyHeader({
   return (
     <section
       className={cn(
-        'flex flex-col gap-5 border p-6',
+        'flex flex-col gap-2 border p-6',
         logoAlignment,
-        builderConfig.hero.enabled && 'grid min-h-56 content-center gap-5 p-8 text-center',
+        builderConfig.hero.enabled && 'min-h-56 justify-center gap-4 p-8',
       )}
       style={getSurveyCardStyle(builderConfig, 'header')}
     >
@@ -121,33 +129,27 @@ function SurveyHeader({
         <img
           src={builderConfig.logoUrl}
           alt=""
-          className={cn(
-            'rounded object-contain',
-            logoSize,
-            builderConfig.hero.enabled && 'mx-auto',
-          )}
+          className={cn('rounded object-contain', logoSize)}
         />
       ) : null}
-      <div>
-        {mode === 'builder' ? (
-          <p className="text-xs font-medium uppercase tracking-normal text-muted-foreground">
-            <span style={{ color: builderConfig.primaryColor }}>Survey preview</span>
-          </p>
-        ) : null}
+
+      <div className="space-y-1">
         <h1
           className={cn(
             'text-2xl font-semibold tracking-normal text-foreground',
-            mode === 'builder' && 'mt-3',
             builderConfig.hero.enabled && 'text-4xl',
           )}
+          style={{ color: builderConfig.primaryColor }}
         >
           {headerTitle}
         </h1>
+
         {headerDescription ? (
           <p
             className={cn(
-              'mt-2 text-sm leading-6 text-muted-foreground',
-              builderConfig.hero.enabled && 'mx-auto max-w-2xl text-base',
+              'text-sm leading-6 text-muted-foreground',
+              builderConfig.hero.enabled && 'max-w-2xl text-base',
+              descriptionAlignment,
             )}
           >
             {headerDescription}
@@ -180,7 +182,9 @@ function SurveyQuestionPreview({
           {index + 1}
         </span>
         <div className="min-w-0 flex-1">
-          {question.type === 'multiple_choice' ? <MultipleChoiceQuestion question={question} /> : null}
+          {question.type === 'multiple_choice' ? (
+            <MultipleChoiceQuestion question={question} />
+          ) : null}
           {question.type === 'rating' ? <RatingQuestion question={question} /> : null}
           {question.type === 'text' ? <TextQuestion question={question} /> : null}
         </div>

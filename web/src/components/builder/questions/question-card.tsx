@@ -1,11 +1,10 @@
 import { GripVertical } from 'lucide-react'
 import type { KeyboardEvent, MouseEvent, ReactNode } from 'react'
-
+import { cn } from '@/lib/utils'
 import { MultipleChoiceQuestion } from '@/src/components/builder/questions/multiple-choice-question'
 import { RatingQuestion } from '@/src/components/builder/questions/rating-question'
 import { TextQuestion } from '@/src/components/builder/questions/text-question'
 import { getSurveyCardStyle } from '@/src/components/survey-renderer/appearance'
-import { cn } from '@/lib/utils'
 import type { BuilderQuestion } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
@@ -51,7 +50,9 @@ export function QuestionCard({ question, index, dragHandle }: QuestionCardProps)
           {index + 1}
         </span>
         <div className="min-w-0 flex-1">
-          {question.type === 'multiple_choice' ? <MultipleChoiceQuestion question={question} /> : null}
+          {question.type === 'multiple_choice' ? (
+            <MultipleChoiceQuestion question={question} />
+          ) : null}
           {question.type === 'rating' ? <RatingQuestion question={question} /> : null}
           {question.type === 'text' ? <TextQuestion question={question} /> : null}
         </div>

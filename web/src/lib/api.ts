@@ -72,7 +72,7 @@ export type SaveQuestionPayload = {
   placeholder: string | null
   required: boolean
   position: number
-  optionsJson: string | null
+  optionsJson: string[] | null
   settingsJson: string | null
 }
 

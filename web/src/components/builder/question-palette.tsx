@@ -1,9 +1,8 @@
 import { useDraggable } from '@dnd-kit/core'
-import { AlignLeft, ListChecks, Star, type LucideIcon } from 'lucide-react'
-
+import { AlignLeft, ListChecks, type LucideIcon, Star } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import type { QuestionType } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
-import { cn } from '@/lib/utils'
 
 const paletteItems = [
   { label: 'Text', type: 'text', icon: AlignLeft },

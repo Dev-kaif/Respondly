@@ -1,14 +1,16 @@
 import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-import { BuilderLayout } from '@/src/components/builder/builder-layout'
+import { Protection } from '@/components/auth/protected'
 import { Skeleton } from '@/components/ui/skeleton'
+import { BuilderLayout } from '@/src/components/builder/builder-layout'
 import { useForm } from '@/src/hooks/use-form'
 import { mergeBuilderConfig } from '@/src/lib/builder-config'
 import { normalizeApiQuestions } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 export const Route = createFileRoute('/builder/$id')({
+  beforeLoad: Protection,
   component: FormBuilderRoute,
 })
 

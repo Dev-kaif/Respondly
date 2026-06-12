@@ -1,19 +1,24 @@
-import { Eye, LoaderCircle, Pencil, Save } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
+import { Eye, LayoutDashboard, LoaderCircle, Pencil, Save } from 'lucide-react'
 import { toast } from 'sonner'
-
-import { PublishButton } from '@/src/components/builder/publish-button'
-import { ThemeSelector } from '@/src/components/builder/theme-selector'
 import { Button } from '@/components/ui/button'
+import { ShareButton } from '@/src/components/builder/share-button'
+import { ThemeSelector } from '@/src/components/builder/theme-selector'
 import { useSaveFormBuilder } from '@/src/hooks/use-save-form-builder'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 export function BuilderTopbar() {
+  const navigate = useNavigate()
   const form = useBuilderStore((state) => state.form)
   const isDirty = useBuilderStore((state) => state.isDirty)
   const builderMode = useBuilderStore((state) => state.builderMode)
   const setBuilderMode = useBuilderStore((state) => state.setBuilderMode)
   const saveMutation = useSaveFormBuilder(form?.id ?? '')
-  const saveLabel = saveMutation.isPending ? 'Saving...' : !isDirty && saveMutation.isSuccess ? 'Saved' : 'Save'
+  const saveLabel = saveMutation.isPending
+    ? 'Saving...'
+    : !isDirty && saveMutation.isSuccess
+      ? 'Saved'
+      : 'Save'
 
   function saveBuilder() {
     if (!form || saveMutation.isPending) {
@@ -60,7 +65,16 @@ export function BuilderTopbar() {
           {saveMutation.isPending ? <LoaderCircle className="animate-spin" /> : <Save />}
           {saveLabel}
         </Button>
-        <PublishButton />
+        <ShareButton />
+        <Button
+          type="button"
+          variant="outline"
+          disabled={!form || isDirty || saveMutation.isPending}
+          onClick={() => void navigate({ to: '/dashboard' })}
+        >
+          <LayoutDashboard />
+          Dashboard
+        </Button>
       </div>
     </header>
   )

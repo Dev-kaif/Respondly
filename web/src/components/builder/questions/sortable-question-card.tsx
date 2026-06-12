@@ -1,11 +1,10 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { GripVertical } from 'lucide-react'
 import { useCallback, useEffect, useRef } from 'react'
-
+import { cn } from '@/lib/utils'
 import { QuestionCard } from '@/src/components/builder/questions/question-card'
 import type { BuilderQuestion } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
-import { cn } from '@/lib/utils'
 
 type SortableQuestionCardProps = {
   question: BuilderQuestion
@@ -13,8 +12,15 @@ type SortableQuestionCardProps = {
 }
 
 export function SortableQuestionCard({ question, index }: SortableQuestionCardProps) {
-  const { attributes, listeners, setActivatorNodeRef, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: question.id })
+  const {
+    attributes,
+    listeners,
+    setActivatorNodeRef,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: question.id })
   const selectedQuestionId = useBuilderStore((state) => state.selectedQuestionId)
   const elementRef = useRef<HTMLDivElement | null>(null)
   const setRefs = useCallback(
@@ -44,9 +50,7 @@ export function SortableQuestionCard({ question, index }: SortableQuestionCardPr
     <div
       ref={setRefs}
       style={{
-        transform: transform
-          ? `translate3d(0px, ${transform.y}px, 0)`
-          : undefined,
+        transform: transform ? `translate3d(0px, ${transform.y}px, 0)` : undefined,
         transition,
       }}
       className={cn(isDragging && 'relative z-10 opacity-70')}

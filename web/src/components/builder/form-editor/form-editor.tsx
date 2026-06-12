@@ -21,9 +21,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { getThemePreset, THEME_OPTIONS, type ThemeId } from '@/src/components/builder/themes/presets'
-import type { BuilderConfig } from '@/src/lib/builder-config'
 import { cn } from '@/lib/utils'
+import {
+  getThemePreset,
+  THEME_OPTIONS,
+  type ThemeId,
+} from '@/src/components/builder/themes/presets'
+import type { BuilderConfig } from '@/src/lib/builder-config'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 const FONT_OPTIONS = [
@@ -94,7 +98,10 @@ export function FormEditor() {
           <Palette className="size-3.5" />
           Theme
         </FieldLabel>
-        <Select value={builderConfig.theme} onValueChange={(value) => selectTheme(value as ThemeId)}>
+        <Select
+          value={builderConfig.theme}
+          onValueChange={(value) => selectTheme(value as ThemeId)}
+        >
           <SelectTrigger id="form-theme">
             <SelectValue />
           </SelectTrigger>

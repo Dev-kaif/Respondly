@@ -1,12 +1,11 @@
 import { create } from 'zustand'
-
+import type { BuilderForm } from '@/src/lib/api'
+import { type BuilderConfig, DEFAULT_BUILDER_CONFIG } from '@/src/lib/builder-config'
 import {
-  createDefaultQuestion,
   type BuilderQuestion,
+  createDefaultQuestion,
   type QuestionType,
 } from '@/src/lib/builder-questions'
-import { DEFAULT_BUILDER_CONFIG, type BuilderConfig } from '@/src/lib/builder-config'
-import type { BuilderForm } from '@/src/lib/api'
 
 export type BuilderMode = 'edit' | 'preview'
 
@@ -94,8 +93,7 @@ export const useBuilderStore = create<BuilderStore>((set) => ({
   deleteQuestion: (questionId) =>
     set((state) => ({
       questions: state.questions.filter((question) => question.id !== questionId),
-      selectedQuestionId:
-        state.selectedQuestionId === questionId ? null : state.selectedQuestionId,
+      selectedQuestionId: state.selectedQuestionId === questionId ? null : state.selectedQuestionId,
       deletedQuestionIds: isTemporaryQuestionId(questionId)
         ? state.deletedQuestionIds
         : state.deletedQuestionIds.includes(questionId)

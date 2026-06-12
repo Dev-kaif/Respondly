@@ -9,7 +9,7 @@ import {
   saveFormBuilder,
   updateQuestion,
 } from '@/src/lib/api'
-import { type BuilderQuestion } from '@/src/lib/builder-questions'
+import type { BuilderQuestion } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 function isTemporaryQuestion(question: BuilderQuestion) {
@@ -28,7 +28,7 @@ function toQuestionPayload(question: BuilderQuestion, position: number): SaveQue
     return {
       ...base,
       placeholder: null,
-      optionsJson: JSON.stringify(question.options),
+      optionsJson: question.options,
       settingsJson: null,
     }
   }

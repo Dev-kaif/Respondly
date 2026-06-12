@@ -1,3 +1,5 @@
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -5,8 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import type { RatingBuilderQuestion, RatingStyle } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
@@ -56,7 +56,10 @@ export function RatingEditor({ question }: { question: RatingBuilderQuestion }) 
       </div>
       <Field>
         <FieldLabel>Rating style</FieldLabel>
-        <Select value={question.settings.style} onValueChange={(value) => updateStyle(value as RatingStyle)}>
+        <Select
+          value={question.settings.style}
+          onValueChange={(value) => updateStyle(value as RatingStyle)}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>

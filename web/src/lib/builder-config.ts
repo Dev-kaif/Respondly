@@ -94,12 +94,18 @@ export function mergeBuilderConfig(value: unknown): BuilderConfig {
   return {
     theme: isThemeId(value.theme) ? value.theme : fallback.theme,
     logoUrl: pickOptionalString(value.logoUrl, readLegacyLogoUrl(value)),
-    primaryColor: pickString(value.primaryColor, readLegacyPrimaryColor(value, fallback.primaryColor)),
+    primaryColor: pickString(
+      value.primaryColor,
+      readLegacyPrimaryColor(value, fallback.primaryColor),
+    ),
     backgroundColor: pickString(
       value.backgroundColor,
       readLegacyBackgroundColor(value, fallback.backgroundColor),
     ),
-    backgroundImageUrl: pickOptionalString(value.backgroundImageUrl, readLegacyBackgroundImageUrl(value)),
+    backgroundImageUrl: pickOptionalString(
+      value.backgroundImageUrl,
+      readLegacyBackgroundImageUrl(value),
+    ),
     fontFamily: pickString(value.fontFamily, readLegacyFontFamily(value, fallback.fontFamily)),
     header: {
       title: pickString(header.title, fallback.header.title),
@@ -112,7 +118,10 @@ export function mergeBuilderConfig(value: unknown): BuilderConfig {
       logoSize: pickOption(header.logoSize, fallback.header.logoSize, ['sm', 'md', 'lg']),
     },
     submitButton: {
-      text: pickString(submitButton.text, readLegacySubmitText(submitButton, fallback.submitButton.text)),
+      text: pickString(
+        submitButton.text,
+        readLegacySubmitText(submitButton, fallback.submitButton.text),
+      ),
       alignment: pickOption(submitButton.alignment, fallback.submitButton.alignment, [
         'left',
         'center',
@@ -124,7 +133,10 @@ export function mergeBuilderConfig(value: unknown): BuilderConfig {
         appearance.backgroundImageOpacity,
         fallback.appearance.backgroundImageOpacity,
       ),
-      headerCardOpacity: pickNumber(appearance.headerCardOpacity, fallback.appearance.headerCardOpacity),
+      headerCardOpacity: pickNumber(
+        appearance.headerCardOpacity,
+        fallback.appearance.headerCardOpacity,
+      ),
       questionCardOpacity: pickNumber(
         appearance.questionCardOpacity,
         fallback.appearance.questionCardOpacity,

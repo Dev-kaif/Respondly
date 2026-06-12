@@ -1,9 +1,9 @@
 import {
   closestCenter,
   DndContext,
+  type DragEndEvent,
   KeyboardSensor,
   PointerSensor,
-  type DragEndEvent,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
@@ -87,7 +87,11 @@ export function BuilderLayout() {
       <div className="flex min-w-0 flex-1 flex-col">
         <BuilderTopbar />
         {builderMode === 'edit' ? (
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
             <div className="flex min-h-0 flex-1">
               <QuestionPalette />
               <BuilderCanvas />

@@ -1,9 +1,8 @@
 import { Trash2 } from 'lucide-react'
-
+import { Button } from '@/components/ui/button'
 import { MultipleChoiceEditor } from '@/src/components/builder/editors/multiple-choice-editor'
 import { RatingEditor } from '@/src/components/builder/editors/rating-editor'
 import { TextEditor } from '@/src/components/builder/editors/text-editor'
-import { Button } from '@/components/ui/button'
 import type { BuilderQuestion } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
