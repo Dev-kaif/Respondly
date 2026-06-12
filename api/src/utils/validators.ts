@@ -70,14 +70,22 @@ export const createQuestionSchema = z
   .object({
     type: z.enum(['text', 'multiple_choice', 'rating']),
     title: z.string().min(1, 'Title is required').max(500),
-    placeholder: z.string().max(200).optional(),
+    placeholder: z.string().max(200).optional().nullable(),
     required: z.boolean().optional().default(false),
-    options: multipleChoiceOptions.optional(),
+    optionsJson: multipleChoiceOptions.optional().nullable(),
   })
-  .refine((d) => d.type !== 'multiple_choice' || (d.options && d.options.length >= 2), {
-    message: 'multiple_choice questions require at least 2 options',
-    path: ['options'],
-  })
+  .refine(
+    (d) => {
+      if (d.type === 'multiple_choice') {
+        return d.optionsJson && d.optionsJson.length >= 2
+      }
+      return true
+    },
+    {
+      message: 'multiple_choice questions require at least 2 options',
+      path: ['optionsJson'],
+    },
+  )
 
 export const updateQuestionSchema = z
   .object({
@@ -85,17 +93,20 @@ export const updateQuestionSchema = z
     title: z.string().min(1).max(500).optional(),
     placeholder: z.string().max(200).optional().nullable(),
     required: z.boolean().optional(),
-    options: multipleChoiceOptions.optional(),
+    optionsJson: multipleChoiceOptions.optional().nullable(),
     settingsJson: z.string().optional().nullable(),
   })
   .refine(
     (d) => {
       if (d.type === 'multiple_choice') {
-        return d.options && d.options.length >= 2
+        return d.optionsJson && d.optionsJson.length >= 2
       }
       return true
     },
-    { message: 'multiple_choice questions require at least 2 options', path: ['options'] },
+    {
+      message: 'multiple_choice questions require at least 2 options',
+      path: ['optionsJson'],
+    },
   )
 
 export const reorderQuestionSchema = z.object({

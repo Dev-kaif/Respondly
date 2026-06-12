@@ -53,7 +53,7 @@ router.post('/forms/:id/questions', async (c) => {
       placeholder: body.placeholder ?? null,
       required: body.required ?? false,
       position,
-      optionsJson: body.options ? JSON.stringify(body.options) : null,
+      optionsJson: body.optionsJson ? JSON.stringify(body.optionsJson) : null,
     })
     .returning()
 
@@ -93,7 +93,7 @@ router.put('/questions/:id', async (c) => {
       ...(body.placeholder !== undefined && { placeholder: body.placeholder }),
       ...(body.required !== undefined && { required: body.required }),
       ...(body.type !== undefined && { type: body.type }),
-      ...(body.options !== undefined && { optionsJson: JSON.stringify(body.options) }),
+      ...(body.optionsJson !== undefined && { optionsJson: JSON.stringify(body.optionsJson) }),
       ...(body.settingsJson !== undefined && { settingsJson: body.settingsJson }),
     })
     .where(eq(questions.id, c.req.param('id')))
