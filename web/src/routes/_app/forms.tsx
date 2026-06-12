@@ -18,7 +18,7 @@ export const Route = createFileRoute('/_app/forms')({
 function FormsPage() {
   const navigate = useNavigate({ from: '/forms' })
   const { page } = Route.useSearch()
-  const formsQuery = useForms({ page, limit: 20 })
+  const formsQuery = useForms({ page, limit: 3 })
   const forms = formsQuery.data?.data ?? []
   const pagination = formsQuery.data?.pagination
   const canGoPrevious = page > 1
@@ -29,7 +29,7 @@ function FormsPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-6">
+    <div className="mx-auto w-full max-w-6xl space-y-6 ">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold">Forms</h2>
@@ -40,7 +40,7 @@ function FormsPage() {
         <CreateFormDialog />
       </div>
 
-      <Card>
+      <Card className="h-[calc(100vh-13rem)] min-h-140">
         <CardHeader>
           <CardTitle>All Forms</CardTitle>
           <CardDescription>
@@ -49,7 +49,8 @@ function FormsPage() {
               : 'Loading forms'}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex min-h-0 flex-1 flex-col">
+          <div className="min-h-0 flex-1 overflow-auto pr-1">
           {formsQuery.isLoading ? <FormListSkeleton count={5} /> : null}
           {formsQuery.isError ? (
             <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
@@ -68,8 +69,9 @@ function FormsPage() {
               ))}
             </div>
           ) : null}
+          </div>
           {pagination && pagination.totalPages > 1 ? (
-            <div className="mt-5 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-5 flex shrink-0 flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-muted-foreground">
                 Page {pagination.page} of {pagination.totalPages}
               </p>
@@ -99,8 +101,8 @@ function FormListSkeleton({ count }: { count: number }) {
   return (
     <div className="space-y-3">
       {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="rounded-xl border bg-background p-4">
-          <div className="flex gap-3">
+        <div key={index} className="h-28 rounded-lg border bg-background px-5 py-4">
+          <div className="flex h-full items-center gap-4">
             <Skeleton className="size-10" />
             <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-1/3" />

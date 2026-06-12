@@ -50,6 +50,11 @@ export type FormsQueryParams = {
   limit?: number
 }
 
+export type FormResponsesQueryParams = {
+  page?: number
+  limit?: number
+}
+
 export type CreateFormPayload = {
   title: string
   description?: string
@@ -239,6 +244,63 @@ export function submitPublicSurvey(slug: string, payload: SubmitSurveyPayload) {
   return apiRequest<{ success: true }>(`/api/survey/${slug}/submit`, {
     method: 'POST',
     body: JSON.stringify(payload),
+  })
+}
+
+export type FormResponseListItem = {
+  id: string
+  submittedAt: string
+}
+
+export type PaginatedFormResponsesResponse = {
+  data: FormResponseListItem[]
+  pagination: PaginationMeta
+}
+
+export type FormResponseAnswer = {
+  questionId: string
+  questionTitle: string
+  questionType: 'text' | 'multiple_choice' | 'rating'
+  answer: string
+}
+
+export type FormAnalyticsResponse = {
+  totalResponses: number
+}
+
+export const formResponsesQueryKeys = {
+  all: (formId: string) => ['form-responses', formId] as const,
+  list: (formId: string, params: Required<FormResponsesQueryParams>) =>
+    [...formResponsesQueryKeys.all(formId), 'list', params] as const,
+  detail: (formId: string, responseId: string) =>
+    [...formResponsesQueryKeys.all(formId), 'detail', responseId] as const,
+  analytics: (formId: string) => [...formResponsesQueryKeys.all(formId), 'analytics'] as const,
+}
+
+export function getFormResponses(formId: string, params: FormResponsesQueryParams = {}) {
+  const page = params.page ?? 1
+  const limit = params.limit ?? 20
+  const searchParams = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  })
+
+  return apiRequest<PaginatedFormResponsesResponse>(
+    `/api/forms/${formId}/responses?${searchParams.toString()}`,
+  )
+}
+
+export function getFormResponse(formId: string, responseId: string) {
+  return apiRequest<FormResponseAnswer[]>(`/api/forms/${formId}/responses/${responseId}`)
+}
+
+export function getFormAnalytics(formId: string) {
+  return apiRequest<FormAnalyticsResponse>(`/api/forms/${formId}/analytics`)
+}
+
+export function deleteResponse(formId: string, responseId: string) {
+  return apiRequest<{ success: true }>(`/api/forms/${formId}/responses/${responseId}`, {
+    method: 'DELETE',
   })
 }
 

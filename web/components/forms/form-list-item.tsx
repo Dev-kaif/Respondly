@@ -1,4 +1,4 @@
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { Copy, ExternalLink, FileText, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { DeleteFormDialog } from '@/components/forms/delete-form-dialog'
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { useDuplicateForm } from '@/src/hooks/use-duplicate-form'
+import { useFormAnalytics } from '@/src/hooks/use-form-analytics'
 import { type FormResponse, getFormTimestamp } from '@/src/lib/api'
 
 type FormListItemProps = {
@@ -39,6 +40,7 @@ export function FormListItem({ form }: FormListItemProps) {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [duplicateError, setDuplicateError] = useState<string | null>(null)
   const duplicateMutation = useDuplicateForm(form.id)
+  const analyticsQuery = useFormAnalytics(form.id)
   const updatedDate = formatUpdatedDate(form)
 
   async function handleDuplicate() {
@@ -52,6 +54,15 @@ export function FormListItem({ form }: FormListItemProps) {
   }
 
   function openForm() {
+    if (analyticsQuery.isLoading) {
+      return
+    }
+
+    if ((analyticsQuery.data?.totalResponses ?? 0) > 0) {
+      void navigate({ to: '/forms/$id/responses', params: { id: form.id }, search: { page: 1 } })
+      return
+    }
+
     void navigate({ to: '/builder/$id', params: { id: form.id }, search: { page: 1 } })
   }
 
@@ -59,51 +70,82 @@ export function FormListItem({ form }: FormListItemProps) {
     <>
       <div
         className={cn(
-          'group grid gap-3 rounded-xl border bg-background p-4 shadow-xs transition-colors hover:bg-muted/40 sm:grid-cols-[1fr_auto] sm:items-center',
+          'group grid h-28 gap-3 rounded-lg border bg-background px-5 py-4 transition-colors hover:bg-muted/30 sm:grid-cols-[1fr_auto] sm:items-center',
           duplicateError && 'border-destructive/30',
         )}
       >
-        <Link
-          to="/builder/$id"
-          params={{ id: form.id }}
-          search={{ page: 1 }}
-          className="min-w-0 outline-none"
+        <button
+          type="button"
+          disabled={analyticsQuery.isLoading}
+          onClick={openForm}
+          className="min-w-0 text-left outline-none disabled:cursor-wait disabled:opacity-70"
         >
-          <div className="flex min-w-0 gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-              <FileText className="size-5" />
-            </span>
-            <span className="min-w-0">
-              <span className="block truncate text-sm font-medium text-foreground">
-                {form.title}
-              </span>
-              <span className="mt-1 block truncate text-sm text-muted-foreground">
-                {form.description || 'No description'}
-              </span>
-              <span className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                <span className="rounded-md border bg-muted/50 px-1.5 py-0.5">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border bg-muted/40">
+              <FileText className="size-5 text-muted-foreground" />
+            </div>
+
+            <div className="flex h-full min-w-0 flex-1 flex-col justify-center">
+              <div className="flex items-center gap-2">
+                <h3 className="truncate text-base font-semibold text-foreground">
+                  {form.title}
+                </h3>
+
+                <span
+                  className={cn(
+                    'shrink-0 rounded-md px-2 py-0.5 text-xs font-medium',
+                    form.isPublished
+                      ? 'bg-green-500/10 text-green-600'
+                      : 'bg-amber-500/10 text-amber-600',
+                  )}
+                >
                   {form.isPublished ? 'Published' : 'Draft'}
                 </span>
+              </div>
+
+              <p className="mt-1 truncate text-sm text-muted-foreground">
+                {form.description || 'No description'}
+              </p>
+
+              <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                <span>
+                  {analyticsQuery.data?.totalResponses ?? 0} response
+                  {(analyticsQuery.data?.totalResponses ?? 0) === 1 ? '' : 's'}
+                </span>
+
+                <span>•</span>
+
                 {updatedDate ? <span>Updated {updatedDate}</span> : null}
-              </span>
-            </span>
+              </div>
+            </div>
           </div>
-        </Link>
+        </button>
+
         <div className="flex items-center justify-end gap-2">
           {duplicateError ? (
             <span className="text-xs text-destructive">{duplicateError}</span>
           ) : null}
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label={`Actions for ${form.title}`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Actions for ${form.title}`}
+              >
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={openForm}>
+              <DropdownMenuItem
+                onSelect={openForm}
+                disabled={analyticsQuery.isLoading}
+              >
                 <ExternalLink />
                 Open
               </DropdownMenuItem>
+
               <DropdownMenuItem
                 onSelect={(event) => {
                   event.preventDefault()
@@ -113,6 +155,7 @@ export function FormListItem({ form }: FormListItemProps) {
                 <Pencil />
                 Rename
               </DropdownMenuItem>
+
               <DropdownMenuItem
                 onSelect={() => void handleDuplicate()}
                 disabled={duplicateMutation.isPending}
@@ -120,7 +163,9 @@ export function FormListItem({ form }: FormListItemProps) {
                 <Copy />
                 {duplicateMutation.isPending ? 'Duplicating...' : 'Duplicate'}
               </DropdownMenuItem>
+
               <DropdownMenuSeparator />
+
               <DropdownMenuItem
                 variant="destructive"
                 onSelect={(event) => {
@@ -135,8 +180,18 @@ export function FormListItem({ form }: FormListItemProps) {
           </DropdownMenu>
         </div>
       </div>
-      <RenameFormDialog form={form} open={renameOpen} onOpenChange={setRenameOpen} />
-      <DeleteFormDialog form={form} open={deleteOpen} onOpenChange={setDeleteOpen} />
+
+      <RenameFormDialog
+        form={form}
+        open={renameOpen}
+        onOpenChange={setRenameOpen}
+      />
+
+      <DeleteFormDialog
+        form={form}
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+      />
     </>
   )
 }

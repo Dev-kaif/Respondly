@@ -17,6 +17,8 @@ import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AppFormsRouteImport } from './routes/_app/forms'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppFormsIdResponsesRouteImport } from './routes/_app/forms_.$id.responses'
+import { Route as AppFormsIdResponsesResponseIdRouteImport } from './routes/_app/forms_.$id.responses_.$responseId'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -57,6 +59,17 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFormsIdResponsesRoute = AppFormsIdResponsesRouteImport.update({
+  id: '/forms_/$id/responses',
+  path: '/forms/$id/responses',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFormsIdResponsesResponseIdRoute =
+  AppFormsIdResponsesResponseIdRouteImport.update({
+    id: '/forms_/$id/responses_/$responseId',
+    path: '/forms/$id/responses/$responseId',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,6 +79,8 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AuthSignupRoute
   '/builder/$id': typeof BuilderIdRoute
   '/survey/$slug': typeof SurveySlugRoute
+  '/forms/$id/responses': typeof AppFormsIdResponsesRoute
+  '/forms/$id/responses/$responseId': typeof AppFormsIdResponsesResponseIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,6 +90,8 @@ export interface FileRoutesByTo {
   '/auth/signup': typeof AuthSignupRoute
   '/builder/$id': typeof BuilderIdRoute
   '/survey/$slug': typeof SurveySlugRoute
+  '/forms/$id/responses': typeof AppFormsIdResponsesRoute
+  '/forms/$id/responses/$responseId': typeof AppFormsIdResponsesResponseIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,6 +103,8 @@ export interface FileRoutesById {
   '/auth/signup': typeof AuthSignupRoute
   '/builder/$id': typeof BuilderIdRoute
   '/survey/$slug': typeof SurveySlugRoute
+  '/_app/forms_/$id/responses': typeof AppFormsIdResponsesRoute
+  '/_app/forms_/$id/responses_/$responseId': typeof AppFormsIdResponsesResponseIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,6 +116,8 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/builder/$id'
     | '/survey/$slug'
+    | '/forms/$id/responses'
+    | '/forms/$id/responses/$responseId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -106,6 +127,8 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/builder/$id'
     | '/survey/$slug'
+    | '/forms/$id/responses'
+    | '/forms/$id/responses/$responseId'
   id:
     | '__root__'
     | '/'
@@ -116,6 +139,8 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/builder/$id'
     | '/survey/$slug'
+    | '/_app/forms_/$id/responses'
+    | '/_app/forms_/$id/responses_/$responseId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -185,17 +210,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/forms_/$id/responses': {
+      id: '/_app/forms_/$id/responses'
+      path: '/forms/$id/responses'
+      fullPath: '/forms/$id/responses'
+      preLoaderRoute: typeof AppFormsIdResponsesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/forms_/$id/responses_/$responseId': {
+      id: '/_app/forms_/$id/responses_/$responseId'
+      path: '/forms/$id/responses/$responseId'
+      fullPath: '/forms/$id/responses/$responseId'
+      preLoaderRoute: typeof AppFormsIdResponsesResponseIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppFormsRoute: typeof AppFormsRoute
+  AppFormsIdResponsesRoute: typeof AppFormsIdResponsesRoute
+  AppFormsIdResponsesResponseIdRoute: typeof AppFormsIdResponsesResponseIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppFormsRoute: AppFormsRoute,
+  AppFormsIdResponsesRoute: AppFormsIdResponsesRoute,
+  AppFormsIdResponsesResponseIdRoute: AppFormsIdResponsesResponseIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

@@ -1,5 +1,5 @@
 import { useDraggable } from '@dnd-kit/core'
-import { AlignLeft, ListChecks, type LucideIcon, Star } from 'lucide-react'
+import { AlignLeft, ListChecks, type LucideIcon, Star, GripVertical } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { QuestionType } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
@@ -14,7 +14,7 @@ export function QuestionPalette() {
   const addQuestion = useBuilderStore((state) => state.addQuestion)
 
   return (
-    <aside className="w-[260px] shrink-0 border-r bg-background">
+    <aside className="w-65 shrink-0 border-r bg-background">
       <div className="border-b px-4 py-3">
         <h3 className="text-sm font-medium">Question Palette</h3>
       </div>
@@ -41,7 +41,13 @@ type PaletteItemProps = {
 }
 
 function PaletteItem({ icon: Icon, label, type, onAdd }: PaletteItemProps) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    isDragging,
+  } = useDraggable({
     id: `palette-${type}`,
     data: {
       source: 'palette',
@@ -55,17 +61,26 @@ function PaletteItem({ icon: Icon, label, type, onAdd }: PaletteItemProps) {
       type="button"
       onClick={onAdd}
       style={{
-        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+        transform: transform
+          ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+          : undefined,
       }}
       className={cn(
-        'flex w-full items-center gap-3 rounded-lg border bg-card px-3 py-2.5 text-left text-sm shadow-xs transition-colors hover:bg-muted/60 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none',
+        'flex w-full items-center gap-3 rounded-lg border bg-card px-3 py-2.5 text-left text-sm shadow-xs transition-colors hover:bg-muted/60',
         isDragging && 'relative z-20 opacity-70',
       )}
-      {...attributes}
-      {...listeners}
     >
+      <span
+        className="flex cursor-grab items-center text-muted-foreground active:cursor-grabbing"
+        {...attributes}
+        {...listeners}
+      >
+        <GripVertical className="size-4" />
+      </span>
+
       <Icon className="size-4 text-muted-foreground" />
-      <span>{label}</span>
+
+      <span className="flex-1">{label}</span>
     </button>
   )
 }
