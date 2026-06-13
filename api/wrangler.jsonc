@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "sde-intern-task-api",
+  "name": "respondly-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-05-22",
   "compatibility_flags": ["nodejs_compat"],
@@ -16,14 +16,10 @@
     {
       "binding": "survey_builder",
       "database_name": "survey-builder",
-      "database_id": "a1490984-b639-4c92-8613-56dbf5cbeb70"
+      "database_id": "a1490984-b639-4c92-8613-56dbf5cbeb70",
+      "migrations_dir": "./drizzle"
     }
-  ],
-  "migrations_dir": "drizzle",
-
-  "vars": {
-    "BETTER_AUTH_URL": "http://localhost:8787"
-  }
+  ]
   //
   // "kv_namespaces": [
   //   { "binding": "SESSIONS", "id": "<id>" }
