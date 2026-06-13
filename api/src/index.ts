@@ -5,6 +5,7 @@ import auth from './routes/auth'
 import forms from './routes/forms'
 import questions from './routes/questions'
 import responses from './routes/responses'
+import users from './routes/users'
 import type { Bindings, Variables } from './types'
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
@@ -23,7 +24,7 @@ app.use(
 
 app.use('*', authMiddleware)
 
-const routes = [auth, forms, questions, responses] as const
+const routes = [auth, forms, questions, responses, users] as const
 
 const api = app.basePath('/api')
 
