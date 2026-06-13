@@ -7,7 +7,7 @@ export function LandingPage() {
       {/* NAV */}
       <nav className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-black/[0.06] bg-white/80 px-6 backdrop-blur-md md:px-10">
         <div className="flex items-center gap-2">
-          <img className='h-10' src="/logo.png" alt="respondly" />
+          <img className="h-10" src="/logo.png" alt="respondly" />
         </div>
         <div className="flex items-center gap-3">
           <Link
@@ -118,10 +118,11 @@ export function LandingPage() {
                   {['A friend or colleague', 'Social media', 'Search engine'].map((opt, i) => (
                     <div
                       key={opt}
-                      className={`flex items-center gap-2.5 rounded-md border px-3 py-2 text-[12px] transition-colors ${i === 0
+                      className={`flex items-center gap-2.5 rounded-md border px-3 py-2 text-[12px] transition-colors ${
+                        i === 0
                           ? 'border-[#7F77DD] bg-[#EEEDFE] text-[#534AB7]'
                           : 'border-black/[0.08] text-[#0f0e17]'
-                        }`}
+                      }`}
                     >
                       <span
                         className={`flex size-3.5 items-center justify-center rounded-full border ${i === 0 ? 'border-[#7F77DD]' : 'border-black/20'}`}
@@ -236,7 +237,7 @@ export function LandingPage() {
       <footer className="border-t border-black/[0.06]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-8 md:px-10">
           <div className="flex items-center gap-2">
-            <img className='h-10' src="/logo.png" alt="respondly" />
+            <img className="h-10" src="/logo.png" alt="respondly" />
           </div>
           <div className="flex flex-wrap gap-5">
             <a

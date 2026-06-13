@@ -13,6 +13,12 @@ export const createAuth = (env: Bindings) => {
     secret: env.BETTER_AUTH_SECRET,
     baseURL: env.BETTER_AUTH_URL,
     emailAndPassword: { enabled: true },
+    socialProviders: {
+      google: {
+        clientId: env.GOOGLE_CLIENT_ID as string,
+        clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+      },
+    },
     trustedOrigins: ['http://localhost:5173', env.FRONTEND_URL],
     advanced: {
       cookies: {

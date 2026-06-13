@@ -23,7 +23,7 @@ export function AppSidebar({ user }: { user: AppSidebarUser }) {
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-68 flex-col border-r bg-background md:flex">
       <div className="flex h-16 items-center border-b px-4">
         <Link to="/dashboard" className="flex min-w-0 items-center gap-2">
-          <img className='h-10' src="/logo.png" alt="respondly" />
+          <img className="h-10" src="/logo.png" alt="respondly" />
         </Link>
       </div>
 
