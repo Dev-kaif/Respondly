@@ -100,7 +100,7 @@ export class ApiRequestError extends Error {
 }
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  // baseURL: '/api', 
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 })

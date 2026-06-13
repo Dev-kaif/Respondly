@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: true }), react(), tailwindcss()],
   server: {
     proxy: {
-      '/api': 'https://respondly-api.rakeshtata082.workers.dev',
+      '/api': {
+        target: 'http://localhost:8787',
+        changeOrigin: true,
+      },
     },
   },
   resolve: {
