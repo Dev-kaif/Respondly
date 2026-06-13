@@ -3,6 +3,7 @@ import { useRouterState } from '@tanstack/react-router'
 const pageTitles: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/forms': 'Forms',
+  '/settings': 'Settings',
 }
 
 export function AppTopbar() {

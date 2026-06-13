@@ -72,15 +72,31 @@ export function CreateFormDialog({ variant = 'button' }: CreateFormDialogProps) 
     variant === 'card' ? (
       <button
         type="button"
-        className="flex w-full items-center gap-4 rounded-xl border border-dashed bg-background p-5 text-left shadow-xs transition-colors hover:border-foreground/30 hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+        className="group relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-r from-primary/5 to-primary/10 p-6 text-left transition-all hover:border-primary/30 hover:shadow-md w-full"
       >
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <Plus className="size-5" />
-        </span>
-        <span className="min-w-0">
-          <span className="block text-base font-medium">Create Form</span>
-          <span className="mt-1 block text-sm text-muted-foreground">Start a new survey form.</span>
-        </span>
+        <div className="flex items-center gap-4">
+          <div className="flex size-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+            <Plus className="size-5" />
+          </div>
+
+          <div className="flex-1">
+            <h3 className="font-semibold">Create a new survey</h3>
+
+            <p className="mt-1 text-sm text-muted-foreground">
+              Collect feedback, applications, or customer responses.
+            </p>
+          </div>
+
+          <span
+            className="
+        text-sm font-medium text-primary
+        transition-transform
+        group-hover:translate-x-1
+      "
+          >
+            Create →
+          </span>
+        </div>
       </button>
     ) : (
       <Button>

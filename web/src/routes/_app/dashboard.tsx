@@ -25,11 +25,14 @@ function DashboardPage() {
 
   return (
     <div className="mx-auto w-full space-y-6 px-4">
-      {/* greeting */}
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight">
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">
           {greeting}, {firstName}
         </h1>
+
+        <p className="text-sm text-muted-foreground">
+          Create surveys, track responses, and manage everything from one place.
+        </p>
       </div>
 
       {/* create */}
