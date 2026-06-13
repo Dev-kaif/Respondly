@@ -13,7 +13,17 @@ export const createAuth = (env: Bindings) => {
     secret: env.BETTER_AUTH_SECRET,
     baseURL: env.BETTER_AUTH_URL,
     emailAndPassword: { enabled: true },
-    trustedOrigins: ['http://localhost:5173'],
+    trustedOrigins: ['http://localhost:5173', env.FRONTEND_URL],
+    advanced: {
+      cookies: {
+        session_token: {
+          attributes: {
+            sameSite: 'none',
+            secure: true,
+          },
+        },
+      },
+    },
   })
 }
 

@@ -15,7 +15,7 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>({
 app.use(
   '*',
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['https://respondly.pages.dev', 'http://localhost:5173'],
     credentials: true,
     allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
