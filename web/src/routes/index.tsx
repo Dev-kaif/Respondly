@@ -1,5 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { authClient } from '@/lib/auth'
+import { createFileRoute } from '@tanstack/react-router'
 import { LandingPage } from '@/src/components/LandingPage'
 
 export const Route = createFileRoute('/')({
