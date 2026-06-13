@@ -10,7 +10,7 @@ export function AppTopbar() {
     select: (state) => state.location.pathname,
   })
 
-  let title = pageTitles[pathname] ?? 'Survey Builder'
+  let title = pageTitles[pathname] ?? 'Respondly'
 
   if (pathname.includes('/responses')) {
     title = 'Responses'

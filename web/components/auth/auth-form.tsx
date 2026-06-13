@@ -96,7 +96,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         <div className="grid w-full gap-8 md:grid-cols-[1fr_24rem] md:items-center">
           <section className="hidden space-y-5 md:block">
             <div className="inline-flex rounded-full border bg-background/70 px-3 py-1 text-xs font-medium text-muted-foreground shadow-xs backdrop-blur">
-              Survey Builder
+              Respondly
             </div>
             <div className="max-w-xl space-y-3">
               <h1 className="text-4xl font-semibold tracking-normal text-balance">
@@ -225,7 +225,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
               </form>
             </CardContent>
             <CardFooter className="justify-center text-sm text-muted-foreground">
-              {isSignup ? 'Already have an account?' : 'New to Survey Builder?'}{' '}
+              {isSignup ? 'Already have an account?' : 'New to Respondly?'}{' '}
               <Button asChild variant="link" className="h-auto px-1">
                 <Link to={isSignup ? '/auth/login' : '/auth/signup'}>
                   {isSignup ? 'Sign in' : 'Create one'}

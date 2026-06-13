@@ -1,5 +1,5 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import { ClipboardList, LayoutDashboard } from 'lucide-react'
+import { ClipboardList, LayoutDashboard, Settings2Icon } from 'lucide-react'
 
 import { UserMenu } from '@/components/layout/user-menu'
 import { cn } from '@/lib/utils'
@@ -13,6 +13,7 @@ type AppSidebarUser = {
 const navItems = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
   { label: 'Forms', to: '/forms', icon: ClipboardList },
+  { label: 'Settings', to: '/settings', icon: Settings2Icon },
 ] as const
 
 export function AppSidebar({ user }: { user: AppSidebarUser }) {
@@ -21,11 +22,9 @@ export function AppSidebar({ user }: { user: AppSidebarUser }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-68 flex-col border-r bg-background md:flex">
       <div className="flex h-16 items-center border-b px-4">
-        <Link to="/dashboard" className="flex min-w-0 items-center gap-3">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
-            SB
-          </span>
-          <span className="truncate text-sm font-semibold">Survey Builder</span>
+        <Link to="/dashboard" className="flex min-w-0 items-center gap-2">
+          <span className="size-2 rounded-full bg-[#7F77DD]" />
+          <span className="truncate text-sm font-semibold">Respondly</span>
         </Link>
       </div>
 

@@ -1,3 +1,5 @@
+import axios, { type AxiosError } from 'axios'
+
 export type FormResponse = {
   id: string
   userId: string
@@ -89,7 +91,6 @@ type ApiErrorBody = {
 export class ApiRequestError extends Error {
   status: number
   details?: unknown
-
   constructor(message: string, status: number, details?: unknown) {
     super(message)
     this.name = 'ApiRequestError'
@@ -98,32 +99,27 @@ export class ApiRequestError extends Error {
   }
 }
 
+const apiClient = axios.create({
+  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' },
+})
+
 async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...init?.headers,
-    },
-    ...init,
-  })
-
-  if (!response.ok) {
-    let message = 'Request failed. Please try again.'
-    let details: unknown
-
-    try {
-      const body = (await response.json()) as ApiErrorBody
-      message = body.error || message
-      details = body.details
-    } catch {
-      message = response.statusText || message
-    }
-
-    throw new ApiRequestError(message, response.status, details)
+  try {
+    const response = await apiClient.request<T>({
+      url: path,
+      method: (init?.method ?? 'GET') as string,
+      data: init?.body,
+    })
+    return response.data
+  } catch (err) {
+    const axiosError = err as AxiosError<ApiErrorBody>
+    const status = axiosError.response?.status ?? 500
+    const body = axiosError.response?.data
+    const message = body?.error ?? axiosError.message ?? 'Request failed. Please try again.'
+    const details = body?.details
+    throw new ApiRequestError(message, status, details)
   }
-
-  return response.json() as Promise<T>
 }
 
 export const formsQueryKeys = {
@@ -309,4 +305,10 @@ export function getFormTimestamp(form: FormResponse) {
   const date = typeof value === 'number' ? new Date(value) : new Date(value)
 
   return Number.isNaN(date.getTime()) ? 0 : date.getTime()
+}
+
+export function deleteAccount() {
+  return apiRequest<{ success: true }>('/api/user/delete', {
+    method: 'DELETE',
+  })
 }
