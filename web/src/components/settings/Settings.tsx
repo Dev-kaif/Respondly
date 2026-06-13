@@ -247,9 +247,9 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-4xl space-y-6 px-4 py-8">
+    <main className="mx-auto w-full max-w-5xl space-y-6 px-5">
       <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-normal">Settings</h1>
+        <h1 className="text-xl font-semibold tracking-normal">Settings</h1>
         <p className="text-sm text-muted-foreground">
           Manage your Respondly profile, preferences, and account security.
         </p>

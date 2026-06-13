@@ -24,7 +24,7 @@ function DashboardPage() {
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   return (
-    <div className="mx-auto w-full space-y-6 px-4 py-8">
+    <div className="mx-auto w-full space-y-6 px-4">
       {/* greeting */}
       <div>
         <h1 className="text-xl font-semibold tracking-tight">
