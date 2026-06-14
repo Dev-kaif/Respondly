@@ -71,8 +71,8 @@ function FormBuilderRoute() {
 
 function BuilderLoadingState() {
   return (
-    <div className="flex h-[calc(100svh-7rem)] min-h-[40rem] overflow-hidden rounded-xl border bg-background shadow-xs">
-      <div className="w-[260px] border-r p-4">
+    <div className="flex h-[calc(100svh-7rem)] min-h-160 overflow-hidden rounded-xl border bg-background shadow-xs">
+      <div className="w-65 border-r p-4">
         <Skeleton className="h-4 w-32" />
         <div className="mt-5 space-y-2">
           <Skeleton className="h-10 w-full" />

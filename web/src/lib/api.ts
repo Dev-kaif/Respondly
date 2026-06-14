@@ -50,6 +50,7 @@ export type PaginatedFormsResponse = {
 export type FormsQueryParams = {
   page?: number
   limit?: number
+  search?: string
 }
 
 export type FormResponsesQueryParams = {
@@ -132,10 +133,16 @@ export const formsQueryKeys = {
 export function getForms(params: FormsQueryParams = {}) {
   const page = params.page ?? 1
   const limit = params.limit ?? 20
+  const search = params.search?.trim() ?? ''
+
   const searchParams = new URLSearchParams({
     page: String(page),
     limit: String(limit),
   })
+
+  if (search) {
+    searchParams.set('search', search)
+  }
 
   return apiRequest<PaginatedFormsResponse>(`/api/forms?${searchParams.toString()}`)
 }

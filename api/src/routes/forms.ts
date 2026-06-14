@@ -1,4 +1,4 @@
-import { and, count, eq } from 'drizzle-orm'
+import { and, count, desc, eq, like, sql } from 'drizzle-orm'
 import { Hono } from 'hono'
 import { nanoid } from 'nanoid'
 import slugify from 'slugify'
@@ -27,15 +27,25 @@ router.get('/forms', async (c) => {
     return validationError(c, parsed.error)
   }
 
-  const { page, limit } = parsed.data
+  const { page, limit, search } = parsed.data
   const offset = (page - 1) * limit
 
   const db = createDb(c.env)
 
-  const [data, totalResult] = await Promise.all([
-    db.select().from(forms).where(eq(forms.userId, user.id)).limit(limit).offset(offset),
+  const whereClause = and(
+    eq(forms.userId, user.id),
+    search ? like(sql`lower(${forms.title})`, `%${search.toLowerCase()}%`) : undefined,
+  )
 
-    db.select({ count: count() }).from(forms).where(eq(forms.userId, user.id)),
+  const [data, totalResult] = await Promise.all([
+    db
+      .select()
+      .from(forms)
+      .where(whereClause)
+      .orderBy(desc(forms.createdAt))
+      .limit(limit)
+      .offset(offset),
+    db.select({ count: count() }).from(forms).where(whereClause),
   ])
 
   const total = totalResult[0]?.count ?? 0
