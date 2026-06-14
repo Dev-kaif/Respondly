@@ -58,10 +58,10 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       try {
         const response = isSignup
           ? await authClient.signUp.email({
-            name: value.name,
-            email: value.email,
-            password: value.password,
-          })
+              name: value.name,
+              email: value.email,
+              password: value.password,
+            })
           : await authClient.signIn.email({ email: value.email, password: value.password })
         if (response.error) {
           setFormError(getErrorMessage(response.error))
@@ -86,7 +86,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         <section className="hidden flex-col gap-8 md:flex">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to='/'>
+            <Link to="/">
               <img className="h-8" src="/logo.png" alt="respondly" />
             </Link>
           </div>

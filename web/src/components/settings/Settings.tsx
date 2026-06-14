@@ -4,7 +4,6 @@ import {
   AlertTriangle,
   KeyRound,
   Laptop,
-  LinkIcon,
   Loader2,
   Monitor,
   Moon,
@@ -15,7 +14,7 @@ import {
   User,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/src/components/ui/button'
@@ -43,7 +42,6 @@ import { cn } from '@/src/lib/utils'
 import { DeleteUserDialog } from './delete-user-dialog'
 
 type ThemeValue = 'light' | 'dark' | 'system'
-type ProviderId = 'google' | 'github'
 type AuthSession = NonNullable<(typeof authClient.$Infer)['Session']>
 type CurrentUser = AuthSession['user']
 type CurrentSession = AuthSession['session']
@@ -56,11 +54,6 @@ type PasswordFormValues = {
   newPassword: string
   confirmPassword: string
 }
-
-const providers: Array<{ id: ProviderId; name: string }> = [
-  { id: 'google', name: 'Google' },
-  { id: 'github', name: 'GitHub' },
-]
 
 const profileSchema = z.object({
   name: z.string().trim().min(1, 'Name is required.'),
@@ -193,15 +186,6 @@ export default function SettingsPage() {
     refreshSessions,
   } = useActiveSessions(currentSession)
 
-  const accountState = useMemo(
-    () =>
-      providers.map((provider) => ({
-        ...provider,
-        isConnected: false,
-      })),
-    [],
-  )
-
   async function handleRevokeSession(token: string) {
     setRevokingToken(token)
 
@@ -269,8 +253,6 @@ export default function SettingsPage() {
         onRefresh={refreshSessions}
         onRevokeSession={handleRevokeSession}
       />
-
-      <ConnectedAccountsCard accounts={accountState} />
 
       <DangerZoneCard />
     </main>
@@ -702,52 +684,6 @@ function ActiveSessionsCard({
             })}
           </div>
         )}
-      </CardContent>
-    </Card>
-  )
-}
-
-function ConnectedAccountsCard({
-  accounts,
-}: {
-  accounts: Array<{ id: ProviderId; name: string; isConnected: boolean }>
-}) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <LinkIcon className="size-4" />
-          Connected Accounts
-        </CardTitle>
-        <CardDescription>
-          Social account linking is not configured for this project.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {/* TODO: Configure Better Auth socialProviders and account linking, then use listUserAccounts, linkSocialAccount, and unlinkAccount here. */}
-        {accounts.map((provider) => (
-          <div
-            key={provider.id}
-            className="flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex size-9 items-center justify-center rounded-lg bg-muted">
-                <span className="text-sm font-semibold">
-                  {provider.id === 'github' ? 'GH' : 'G'}
-                </span>
-              </div>
-              <div>
-                <p className="font-medium">{provider.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {provider.isConnected ? 'Connected' : 'Not connected'}
-                </p>
-              </div>
-            </div>
-            <Button type="button" variant="outline" size="sm" disabled className="w-full sm:w-auto">
-              Configure provider first
-            </Button>
-          </div>
-        ))}
       </CardContent>
     </Card>
   )
