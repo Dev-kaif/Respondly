@@ -42,7 +42,11 @@ function DashboardPage() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-medium text-foreground">Recent forms</h2>
-          <Link to="/forms" search={{ page: 1 }} className="text-sm text-primary hover:underline">
+          <Link
+            to="/forms"
+            search={{ page: 1, search: '' }}
+            className="text-sm text-primary hover:underline"
+          >
             View all →
           </Link>
         </div>

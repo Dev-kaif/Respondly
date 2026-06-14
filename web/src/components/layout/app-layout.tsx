@@ -10,8 +10,9 @@ export function AppLayout() {
   if (isPending) {
     return (
       <main className="grid min-h-svh place-items-center bg-muted/30 px-4">
-        <div className="rounded-lg border bg-background px-4 py-3 text-sm text-muted-foreground shadow-sm">
-          Loading workspace...
+        <div className="flex flex-col gap-2">
+          <img className="h-12" src="/loader.svg" alt="" />
+          <img className="h-8" src="/logo.png" alt="" />
         </div>
       </main>
     )

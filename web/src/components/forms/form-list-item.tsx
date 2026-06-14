@@ -1,14 +1,7 @@
 import { useNavigate } from '@tanstack/react-router'
-import {
-  Copy,
-  ExternalLink,
-  FileText,
-  Link2Icon,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-} from 'lucide-react'
+import { Copy, ExternalLink, FileText, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { DeleteFormDialog } from '@/src/components/forms/delete-form-dialog'
 import { RenameFormDialog } from '@/src/components/forms/rename-form-dialog'
 import { Button } from '@/src/components/ui/button'
@@ -79,8 +72,9 @@ export function FormListItem({ form }: FormListItemProps) {
     void navigate({ to: '/builder/$id', params: { id: form.id }, search: { page: 1 } })
   }
 
-  function openSurveyLink() {
-    window.open(publicUrl, '_blank', 'noopener,noreferrer')
+  async function copySurveyLink() {
+    await navigator.clipboard.writeText(publicUrl)
+    toast.success('Link copied to clipboard')
   }
 
   return (
@@ -150,8 +144,8 @@ export function FormListItem({ form }: FormListItemProps) {
 
             <DropdownMenuContent align="end">
               {form.isPublished && (
-                <DropdownMenuItem onSelect={openSurveyLink} disabled={analyticsQuery.isLoading}>
-                  <Link2Icon />
+                <DropdownMenuItem onSelect={copySurveyLink} disabled={analyticsQuery.isLoading}>
+                  <Copy />
                   Survey Link
                 </DropdownMenuItem>
               )}

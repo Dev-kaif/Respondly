@@ -1,5 +1,5 @@
 import { Plus, Trash2 } from 'lucide-react'
-
+import { useRef } from 'react'
 import { Button } from '@/src/components/ui/button'
 import { Field, FieldGroup, FieldLabel } from '@/src/components/ui/field'
 import { Input } from '@/src/components/ui/input'
@@ -10,12 +10,17 @@ import { useBuilderStore } from '@/src/stores/builder-store'
 export function MultipleChoiceEditor({ question }: { question: MultipleChoiceBuilderQuestion }) {
   const updateQuestion = useBuilderStore((state) => state.updateQuestion)
 
+  const optionIds = useRef<string[]>([])
+  while (optionIds.current.length < question.options.length) {
+    optionIds.current.push(crypto.randomUUID())
+  }
+  optionIds.current = optionIds.current.slice(0, question.options.length)
+
   function updateOption(index: number, value: string) {
     updateQuestion(question.id, (current) => {
       if (current.type !== 'multiple_choice') {
         return current
       }
-
       return {
         ...current,
         options: current.options.map((option, optionIndex) =>
@@ -30,7 +35,6 @@ export function MultipleChoiceEditor({ question }: { question: MultipleChoiceBui
       if (current.type !== 'multiple_choice') {
         return current
       }
-
       return {
         ...current,
         options: [...current.options, `Option ${current.options.length + 1}`],
@@ -42,12 +46,11 @@ export function MultipleChoiceEditor({ question }: { question: MultipleChoiceBui
     if (question.options.length <= 2) {
       return
     }
-
+    optionIds.current.splice(index, 1)
     updateQuestion(question.id, (current) => {
       if (current.type !== 'multiple_choice' || current.options.length <= 2) {
         return current
       }
-
       return {
         ...current,
         options: current.options.filter((_, optionIndex) => optionIndex !== index),
@@ -87,7 +90,7 @@ export function MultipleChoiceEditor({ question }: { question: MultipleChoiceBui
         <FieldLabel>Options</FieldLabel>
         <div className="space-y-2">
           {question.options.map((option, index) => (
-            <div key={`${question.id}-option-${option}`} className="flex items-center gap-2">
+            <div key={optionIds.current[index]} className="flex items-center gap-2">
               <Input value={option} onChange={(event) => updateOption(index, event.target.value)} />
               <Button
                 type="button"
