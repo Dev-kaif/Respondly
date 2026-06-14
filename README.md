@@ -59,10 +59,68 @@ Respondly is a full-stack survey builder that allows users to create, manage, an
 
 ## Getting Started
 
-Since Respondly is a monorepo, install dependencies and start all applications from the repository root:
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Dev-kaif/Respondly.git
+cd Respondly
+```
+
+### 2. Install Dependencies
 
 ```bash
 pnpm install
+```
+
+### 3. Configure Environment Variables
+
+#### Frontend (`web/.env`)
+
+Create a `.env` file inside the `web` directory:
+
+```env
+VITE_API_URL=http://localhost:8787
+```
+
+#### Backend (`api/.dev.vars`)
+
+Create a `.dev.vars` file inside the `api` directory:
+
+```env
+BETTER_AUTH_SECRET=your-secret
+
+BETTER_AUTH_URL=http://localhost:8787
+
+FRONTEND_URL=http://localhost:5173
+
+GOOGLE_CLIENT_ID=your-google-client-id
+
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+```
+
+> **Note:** Google OAuth credentials must be created in the Google Cloud Console. Ensure the authorized redirect URIs and origins match your local development setup.
+
+### 4. Run the Application
+
+Start both the frontend and backend from the project root:
+
+```bash
 pnpm dev
 ```
 
+This will start:
+
+* Frontend: `http://localhost:5173`
+* Backend: `http://localhost:8787`
+
+### 5. Verify the Setup
+
+Run the following commands to ensure everything is working correctly:
+
+```bash
+pnpm check
+pnpm typecheck
+pnpm build
+```
+
+All commands should complete successfully without errors.
