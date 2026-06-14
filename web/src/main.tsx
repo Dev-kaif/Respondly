@@ -4,7 +4,7 @@ import { ThemeProvider } from 'next-themes'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { Toaster } from '@/components/ui/sonner'
+import { Toaster } from '@/src/components/ui/sonner'
 import { routeTree } from './routeTree.gen'
 
 const router = createRouter({

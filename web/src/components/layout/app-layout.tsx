@@ -1,8 +1,8 @@
 import { Outlet } from '@tanstack/react-router'
 
-import { AppSidebar } from '@/components/layout/app-sidebar'
-import { AppTopbar } from '@/components/layout/app-topbar'
-import { authClient } from '@/lib/auth'
+import { AppSidebar } from '@/src/components/layout/app-sidebar'
+import { AppTopbar } from '@/src/components/layout/app-topbar'
+import { authClient } from '@/src/lib/auth'
 
 export function AppLayout() {
   const { data: session, isPending } = authClient.useSession()

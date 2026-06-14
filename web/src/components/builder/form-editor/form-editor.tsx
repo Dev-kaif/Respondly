@@ -10,24 +10,23 @@ import {
   Rows3,
   Type,
 } from 'lucide-react'
-
-import { Button } from '@/components/ui/button'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import {
+  getThemePreset,
+  THEME_OPTIONS,
+  type ThemeId,
+} from '@/src/components/builder/themes/presets'
+import { Button } from '@/src/components/ui/button'
+import { Field, FieldGroup, FieldLabel } from '@/src/components/ui/field'
+import { Input } from '@/src/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { cn } from '@/lib/utils'
-import {
-  getThemePreset,
-  THEME_OPTIONS,
-  type ThemeId,
-} from '@/src/components/builder/themes/presets'
+} from '@/src/components/ui/select'
 import type { BuilderConfig } from '@/src/lib/builder-config'
+import { cn } from '@/src/lib/utils'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 const FONT_OPTIONS = [

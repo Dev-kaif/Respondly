@@ -2,7 +2,7 @@ import { Loader2, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { z } from 'zod'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+} from '@/src/components/ui/dialog'
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/src/components/ui/field'
+import { Input } from '@/src/components/ui/input'
 import { useCreateForm } from '@/src/hooks/use-create-form'
 
 const createFormSchema = z.object({

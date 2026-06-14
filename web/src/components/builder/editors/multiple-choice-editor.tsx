@@ -1,9 +1,9 @@
 import { Plus, Trash2 } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
+import { Button } from '@/src/components/ui/button'
+import { Field, FieldGroup, FieldLabel } from '@/src/components/ui/field'
+import { Input } from '@/src/components/ui/input'
+import { Switch } from '@/src/components/ui/switch'
 import type { MultipleChoiceBuilderQuestion } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
 

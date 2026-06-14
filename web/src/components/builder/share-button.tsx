@@ -1,7 +1,7 @@
 import { Copy, ExternalLink, LoaderCircle, Send, Share2, Undo2 } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
+} from '@/src/components/ui/dialog'
+import { Input } from '@/src/components/ui/input'
 import { usePublishForm } from '@/src/hooks/use-publish-form'
 import { useUnpublishForm } from '@/src/hooks/use-unpublish-form'
+import { cn } from '@/src/lib/utils'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 export function ShareButton() {

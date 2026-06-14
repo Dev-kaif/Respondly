@@ -1,6 +1,6 @@
 import { LoaderCircle, Trash2 } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from '@/src/components/ui/dialog'
 
 type DeleteResponseDialogProps = {
   open: boolean

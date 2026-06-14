@@ -1,13 +1,13 @@
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { Field, FieldGroup, FieldLabel } from '@/src/components/ui/field'
+import { Input } from '@/src/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
+} from '@/src/components/ui/select'
+import { Switch } from '@/src/components/ui/switch'
 import type { RatingBuilderQuestion, RatingStyle } from '@/src/lib/builder-questions'
 import { useBuilderStore } from '@/src/stores/builder-store'
 

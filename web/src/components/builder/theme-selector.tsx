@@ -1,6 +1,10 @@
 import { Check, Palette } from 'lucide-react'
-
-import { Button } from '@/components/ui/button'
+import {
+  getThemePreset,
+  THEME_OPTIONS,
+  type ThemeId,
+} from '@/src/components/builder/themes/presets'
+import { Button } from '@/src/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,12 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {
-  getThemePreset,
-  THEME_OPTIONS,
-  type ThemeId,
-} from '@/src/components/builder/themes/presets'
+} from '@/src/components/ui/dropdown-menu'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 type ThemeSelectorProps = {

@@ -1,9 +1,9 @@
 import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-import { Protection } from '@/components/auth/protected'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Protection } from '@/src/components/auth/protected'
 import { BuilderLayout } from '@/src/components/builder/builder-layout'
+import { Skeleton } from '@/src/components/ui/skeleton'
 import { useForm } from '@/src/hooks/use-form'
 import { mergeBuilderConfig } from '@/src/lib/builder-config'
 import { normalizeApiQuestions } from '@/src/lib/builder-questions'

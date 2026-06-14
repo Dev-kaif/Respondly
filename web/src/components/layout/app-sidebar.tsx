@@ -1,8 +1,8 @@
 import { Link, useRouterState } from '@tanstack/react-router'
 import { ClipboardList, LayoutDashboard, Settings2Icon } from 'lucide-react'
 
-import { UserMenu } from '@/components/layout/user-menu'
-import { cn } from '@/lib/utils'
+import { UserMenu } from '@/src/components/layout/user-menu'
+import { cn } from '@/src/lib/utils'
 
 type AppSidebarUser = {
   name?: string | null

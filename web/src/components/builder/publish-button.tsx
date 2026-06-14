@@ -2,7 +2,7 @@ import { LoaderCircle, Send, Undo2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 import { usePublishForm } from '@/src/hooks/use-publish-form'
 import { useUnpublishForm } from '@/src/hooks/use-unpublish-form'
 import { useBuilderStore } from '@/src/stores/builder-store'

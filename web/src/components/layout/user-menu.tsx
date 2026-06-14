@@ -8,8 +8,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { authClient } from '@/lib/auth'
+} from '@/src/components/ui/dropdown-menu'
+import { authClient } from '@/src/lib/auth'
 
 type UserMenuUser = {
   name?: string | null

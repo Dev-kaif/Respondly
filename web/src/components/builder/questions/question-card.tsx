@@ -1,11 +1,11 @@
 import { GripVertical } from 'lucide-react'
 import type { KeyboardEvent, MouseEvent, ReactNode } from 'react'
-import { cn } from '@/lib/utils'
 import { MultipleChoiceQuestion } from '@/src/components/builder/questions/multiple-choice-question'
 import { RatingQuestion } from '@/src/components/builder/questions/rating-question'
 import { TextQuestion } from '@/src/components/builder/questions/text-question'
 import { getSurveyCardStyle } from '@/src/components/survey-renderer/appearance'
 import type { BuilderQuestion } from '@/src/lib/builder-questions'
+import { cn } from '@/src/lib/utils'
 import { useBuilderStore } from '@/src/stores/builder-store'
 
 type QuestionCardProps = {

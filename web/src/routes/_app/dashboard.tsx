@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { CreateFormDialog } from '@/components/forms/create-form-dialog'
-import { FormListItem } from '@/components/forms/form-list-item'
-import { Skeleton } from '@/components/ui/skeleton'
-import { authClient } from '@/lib/auth'
+import { CreateFormDialog } from '@/src/components/forms/create-form-dialog'
+import { FormListItem } from '@/src/components/forms/form-list-item'
+import { Skeleton } from '@/src/components/ui/skeleton'
 import { useForms } from '@/src/hooks/use-forms'
 import { getFormTimestamp } from '@/src/lib/api'
+import { authClient } from '@/src/lib/auth'
 
 export const Route = createFileRoute('/_app/dashboard')({
   component: DashboardPage,

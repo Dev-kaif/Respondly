@@ -18,7 +18,7 @@ import { useTheme } from 'next-themes'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 import {
   Card,
   CardContent,
@@ -26,20 +26,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+} from '@/src/components/ui/card'
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/src/components/ui/field'
+import { Input } from '@/src/components/ui/input'
+import { Label } from '@/src/components/ui/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { authClient } from '@/lib/auth'
-import { cn } from '@/lib/utils'
+} from '@/src/components/ui/select'
 import { useDeleteAccount } from '@/src/hooks/user-delete-user'
+import { authClient } from '@/src/lib/auth'
+import { cn } from '@/src/lib/utils'
 import { DeleteUserDialog } from './delete-user-dialog'
 
 type ThemeValue = 'light' | 'dark' | 'system'

@@ -2,7 +2,7 @@ import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+} from '@/src/components/ui/dialog'
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/src/components/ui/field'
+import { Input } from '@/src/components/ui/input'
 import { useRenameForm } from '@/src/hooks/use-rename-form'
 import type { FormResponse } from '@/src/lib/api'
 

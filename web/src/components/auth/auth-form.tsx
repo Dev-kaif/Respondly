@@ -3,9 +3,9 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { LayoutDashboard, Loader2, Palette, PlusCircle } from 'lucide-react'
 import { useState } from 'react'
 import { z } from 'zod'
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import { authClient } from '@/lib/auth'
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/src/components/ui/field'
+import { Input } from '@/src/components/ui/input'
+import { authClient } from '@/src/lib/auth'
 
 const loginSchema = z.object({
   name: z.string(),

@@ -9,20 +9,20 @@ import {
   Trash2,
 } from 'lucide-react'
 import { useState } from 'react'
-import { DeleteFormDialog } from '@/components/forms/delete-form-dialog'
-import { RenameFormDialog } from '@/components/forms/rename-form-dialog'
-import { Button } from '@/components/ui/button'
+import { DeleteFormDialog } from '@/src/components/forms/delete-form-dialog'
+import { RenameFormDialog } from '@/src/components/forms/rename-form-dialog'
+import { Button } from '@/src/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { cn } from '@/lib/utils'
+} from '@/src/components/ui/dropdown-menu'
 import { useDuplicateForm } from '@/src/hooks/use-duplicate-form'
 import { useFormAnalytics } from '@/src/hooks/use-form-analytics'
 import { type FormResponse, getFormTimestamp } from '@/src/lib/api'
+import { cn } from '@/src/lib/utils'
 
 type FormListItemProps = {
   form: FormResponse

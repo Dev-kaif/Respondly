@@ -1,10 +1,9 @@
 import { Star } from 'lucide-react'
-
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
 import { getSurveyCardStyle } from '@/src/components/survey-renderer/appearance'
+import { Input } from '@/src/components/ui/input'
 import type { BuilderConfig } from '@/src/lib/builder-config'
 import type { BuilderQuestion } from '@/src/lib/builder-questions'
+import { cn } from '@/src/lib/utils'
 
 type SurveyQuestionFieldProps = {
   question: BuilderQuestion
